@@ -10,7 +10,7 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
-        "sqlite:///quran.db"
+        "postgresql://postgres:sa%401234@localhost:5432/quran_db"
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
