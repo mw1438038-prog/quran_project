@@ -1,0 +1,110 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Quran Reading</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/quran.css') }}"
+    />
+  </head>
+
+  <body>
+    <main class="container">
+      <section class="page-control">
+        <div class="surah-selector">
+          <label for="surahSelect"> Surah </label>
+
+          <select id="surahSelect">
+            <option value="">Select Surah</option>
+          </select>
+        </div>
+
+        <div class="surah-selector">
+          <label for="juzSelect"> Para / Juz </label>
+
+          <select id="juzSelect">
+            <option value="">Select Para</option>
+          </select>
+        </div>
+
+        <div class="page-info">
+          <span class="page-label"> Quran Page </span>
+
+          <div class="page-number-box">
+            <input type="number" id="pageInput" min="1" max="604" value="1" />
+
+            <span> / 604 </span>
+          </div>
+        </div>
+
+        <div class="surah-selector">
+          <label for="readingMode"> Reading Mode </label>
+
+          <select id="readingMode">
+            <option value="arabic">Arabic Only</option>
+
+            <option value="translation">Arabic + Urdu Translation</option>
+
+            <option value="tafsir">Arabic + Translation + Tafseer</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="quran-page">
+        <div class="quran-page-header">
+          <div>
+            <span class="small-title"> THE HOLY QURAN </span>
+
+            <h2 id="surahTitle">Loading...</h2>
+
+            <span class="juz-title" id="juzTitle"> Para 1 </span>
+          </div>
+
+          <div class="page-badge">
+            Page
+
+            <strong id="currentPage"> 1 </strong>
+          </div>
+        </div>
+
+        <div class="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+
+        <div class="loading" id="loading">
+          <div class="loader"></div>
+
+          <p>Loading Quran...</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="ayah-list" id="ayahList"></div>
+      </section>
+
+      <section class="bottom-navigation">
+        <button class="nav-button" id="previousPageBottom" type="button">
+          ← Previous Page
+        </button>
+
+        <div class="page-progress">
+          <span id="progressText"> Page 1 of 604 </span>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <button class="nav-button primary" id="nextPageBottom" type="button">
+          Next Page →
+        </button>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/quran.js') }}"></script>
+  </body>
+</html>

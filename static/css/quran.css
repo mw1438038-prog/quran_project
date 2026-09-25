@@ -1,0 +1,970 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: white;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.container {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  padding: 24px 0;
+}
+
+/* =====================================================
+   PAGE CONTROL
+===================================================== */
+
+.page-control {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 10px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+/* Existing page info */
+
+.page-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-label {
+  font-size: 12px;
+  color: #66756c;
+}
+
+.page-number-box {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 14px;
+  color: #536158;
+}
+
+.page-number-box input {
+  width: 65px;
+  height: 34px;
+
+  text-align: center;
+
+  border: 1px solid #cbd6ce;
+  border-radius: 7px;
+
+  background: white;
+
+  font-size: 15px;
+}
+
+/* =====================================================
+   NEW CONTROL GROUPS
+   Surah / Para / Reading Mode
+===================================================== */
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.control-group label {
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: #66756c;
+}
+
+.control-group select {
+  height: 38px;
+
+  border: 1px solid #cbd6ce;
+  border-radius: 8px;
+
+  background: white;
+
+  padding: 0 10px;
+
+  font-size: 14px;
+
+  color: #244735;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.control-group select:focus {
+  border-color: #174f36;
+}
+
+/* =====================================================
+   SURAH SELECTOR
+===================================================== */
+
+.surah-selector {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.surah-selector label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#surahSelect {
+  width: 320px;
+  min-height: 46px;
+
+  padding: 0 16px;
+
+  font-size: 17px;
+  font-weight: 500;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+#surahSelect:focus {
+  border-color: #6b7280;
+}
+
+/* =====================================================
+   JUZ / PARA SELECTOR
+===================================================== */
+
+#juzSelect {
+  width: 250px;
+  min-height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #cbd6ce;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #244735;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+#juzSelect:focus {
+  border-color: #174f36;
+}
+
+/* =====================================================
+   READING MODE
+===================================================== */
+
+#readingMode {
+  width: 250px;
+  min-height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #cbd6ce;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #244735;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+#readingMode:focus {
+  border-color: #174f36;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.nav-button {
+  min-width: 120px;
+  height: 38px;
+
+  padding: 0 16px;
+
+  border: 1px solid #cbd6ce;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #244735;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: #edf5ef;
+
+  transform: translateY(-1px);
+}
+
+.nav-button.primary {
+  background: #174f36;
+
+  border-color: #174f36;
+
+  color: white;
+}
+
+.nav-button.primary:hover:not(:disabled) {
+  background: #236947;
+}
+
+.nav-button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   QURAN PAGE
+===================================================== */
+
+.quran-page {
+  width: 100%;
+
+  flex: 1;
+
+  min-height: 0;
+
+  background: transparent;
+
+  padding: 20px 45px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+}
+
+/* Chrome / Edge scrollbar */
+
+.quran-page::-webkit-scrollbar {
+  width: 9px;
+}
+
+.quran-page::-webkit-scrollbar-track {
+  background: #edf2ee;
+
+  border-radius: 10px;
+}
+
+.quran-page::-webkit-scrollbar-thumb {
+  background: #9caf9f;
+
+  border-radius: 10px;
+}
+
+.quran-page::-webkit-scrollbar-thumb:hover {
+  background: #718878;
+}
+
+/* =====================================================
+   QURAN PAGE HEADER
+===================================================== */
+
+.quran-page-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.small-title {
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+  color: #829087;
+}
+
+.quran-page-header h2 {
+  margin-top: 3px;
+
+  font-size: 24px;
+
+  color: #174f36;
+}
+
+/* Para title added for new JS */
+
+.juz-title {
+  display: inline-block;
+
+  margin-top: 3px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #66756c;
+}
+
+.page-badge {
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  background: #edf4ee;
+
+  color: #496254;
+
+  font-size: 12px;
+}
+
+/* =====================================================
+   BISMILLAH
+===================================================== */
+
+.bismillah {
+  text-align: center;
+
+  padding: 15px 10px 20px;
+
+  color: #174f36;
+
+  font-family: "Amiri", "Noto Naskh Arabic", serif;
+
+  font-size: 27px;
+
+  direction: rtl;
+}
+
+/* =====================================================
+   AYAH LIST
+===================================================== */
+
+.ayah-list {
+  width: 100%;
+}
+
+/* =====================================================
+   AYAH CARD
+===================================================== */
+
+.ayah-card {
+  position: relative;
+
+  width: 100%;
+
+  padding: 18px 10px 22px;
+
+  border-bottom: 1px solid #e5ebe6;
+}
+
+.ayah-card:last-child {
+  border-bottom: none;
+}
+
+/* =====================================================
+   SURAH NAME INSIDE AYAH
+===================================================== */
+
+.ayah-surah-name {
+  margin-bottom: 12px;
+
+  padding-bottom: 8px;
+
+  border-bottom: 1px solid #edf1ee;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: #66756c;
+}
+
+/* =====================================================
+   AYAH CONTENT
+===================================================== */
+
+.ayah-content {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: row;
+
+  gap: 20px;
+
+  align-items: stretch;
+}
+
+/* =====================================================
+   TRANSLATION / TAFSEER SIDE
+===================================================== */
+
+.translation-side {
+  width: 50%;
+
+  order: 1;
+
+  padding: 10px 15px;
+
+  border-right: 1px solid #e5ebe6;
+
+  direction: rtl;
+
+  text-align: right;
+}
+
+.side-title {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: #315b7d;
+
+  direction: ltr;
+
+  text-align: left;
+}
+
+.translation {
+  margin-top: 8px;
+
+  padding: 12px 15px;
+
+  background: #f5f8f5;
+
+  border-right: 3px solid #9caf9f;
+
+  border-radius: 6px;
+
+  direction: rtl;
+
+  text-align: right;
+
+  font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", serif;
+
+  font-size: 17px;
+
+  line-height: 2;
+
+  color: #3f4d44;
+}
+
+/* =====================================================
+   TAFSIR
+===================================================== */
+
+.tafsir-heading {
+  margin-top: 18px;
+
+  padding-top: 12px;
+
+  border-top: 1px solid #e4e9e5;
+}
+
+.tafsir-text {
+  margin-top: 8px;
+
+  padding: 14px;
+
+  background: #fafbf9;
+
+  border: 1px solid #e0e7e1;
+
+  border-radius: 7px;
+
+  direction: rtl;
+
+  text-align: right;
+
+  font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", serif;
+
+  font-size: 15px;
+
+  line-height: 2;
+
+  color: #4d5750;
+}
+
+/* =====================================================
+   ARABIC SIDE
+===================================================== */
+
+.arabic-side {
+  width: 50%;
+
+  order: 2;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 15px;
+
+  padding: 5px 10px;
+
+  direction: rtl;
+
+  text-align: right;
+}
+
+/* =====================================================
+   AYAH NUMBER ICON
+===================================================== */
+
+.ayah-number {
+  width: 30px;
+  height: 30px;
+
+  min-width: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 5px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #d9b86c, #9d7730);
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  box-shadow: 0 2px 6px rgba(120, 90, 30, 0.2);
+
+  direction: ltr;
+}
+
+/* =====================================================
+   ARABIC TEXT
+===================================================== */
+
+.arabic-text {
+  flex: 1;
+
+  width: 100%;
+
+  direction: rtl;
+
+  text-align: right;
+
+  font-family: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+
+  line-height: 2.25;
+
+  font-size: 25px;
+
+  color: #174f36;
+
+  word-spacing: 3px;
+}
+
+/* Preserve decorative text colors */
+
+.ayah-card:nth-child(3n + 1) .arabic-text {
+  color: #174f36;
+}
+
+.ayah-card:nth-child(3n + 2) .arabic-text {
+  color: #315b7d;
+}
+
+.ayah-card:nth-child(3n + 3) .arabic-text {
+  color: #6b4d76;
+}
+
+/* =====================================================
+   ARABIC ONLY MODE
+===================================================== */
+
+.ayah-content .arabic-side:only-child {
+  width: 100%;
+}
+
+.ayah-content .arabic-side:only-child .arabic-text {
+  font-size: 30px;
+
+  line-height: 2.25;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+  text-align: center;
+
+  padding: 40px;
+
+  color: #647269;
+}
+
+.loader {
+  width: 35px;
+  height: 35px;
+
+  margin: 0 auto 12px;
+
+  border: 4px solid #dfe8e1;
+
+  border-top-color: #174f36;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-message {
+  display: none;
+
+  margin: 15px 0;
+
+  padding: 12px;
+
+  background: #fff0f0;
+
+  border: 1px solid #efcaca;
+
+  border-radius: 7px;
+
+  color: #a33b3b;
+
+  text-align: center;
+}
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-navigation {
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 10px auto 0;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+.page-progress {
+  flex: 1;
+
+  max-width: 400px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  color: #69776e;
+}
+
+.progress-bar {
+  width: 100%;
+
+  height: 5px;
+
+  margin-top: 5px;
+
+  background: #dfe7e1;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0;
+
+  height: 100%;
+
+  background: #174f36;
+
+  transition: width 0.3s ease;
+}
+
+/* =====================================================
+   HIDE HEADER + FOOTER
+===================================================== */
+
+.top-header,
+footer {
+  display: none !important;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px) {
+  .page-control {
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    padding: 0 15px;
+  }
+
+  .control-group {
+    flex: 1;
+
+    min-width: 200px;
+  }
+
+  #surahSelect,
+  #juzSelect,
+  #readingMode {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+  .container {
+    padding: 8px;
+  }
+
+  .quran-page {
+    padding: 15px 20px;
+  }
+
+  .ayah-content {
+    flex-direction: column;
+  }
+
+  .translation-side,
+  .arabic-side {
+    width: 100%;
+  }
+
+  .translation-side {
+    order: 2;
+
+    border-right: none;
+
+    border-top: 1px solid #e5ebe6;
+
+    padding-top: 15px;
+  }
+
+  .arabic-side {
+    order: 1;
+  }
+
+  .arabic-text {
+    font-size: 23px;
+  }
+
+  .bottom-navigation {
+    gap: 6px;
+  }
+
+  .nav-button {
+    min-width: 90px;
+
+    padding: 0 10px;
+
+    font-size: 12px;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+  .page-control {
+    gap: 8px;
+
+    align-items: stretch;
+  }
+
+  .control-group {
+    min-width: 100%;
+
+    width: 100%;
+  }
+
+  .surah-selector {
+    width: 100%;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 5px;
+  }
+
+  .surah-selector label {
+    font-size: 13px;
+  }
+
+  #surahSelect {
+    width: 100%;
+
+    min-height: 40px;
+
+    font-size: 14px;
+  }
+
+  #juzSelect,
+  #readingMode {
+    width: 100%;
+
+    min-height: 40px;
+
+    font-size: 13px;
+  }
+
+  .page-info {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .quran-page {
+    padding: 12px 15px;
+
+    border-radius: 8px;
+  }
+
+  .quran-page-header h2 {
+    font-size: 18px;
+  }
+
+  .juz-title {
+    font-size: 11px;
+  }
+
+  .bismillah {
+    font-size: 23px;
+  }
+
+  .ayah-card {
+    padding: 15px 5px 18px;
+  }
+
+  .arabic-text {
+    font-size: 21px;
+
+    line-height: 2.1;
+  }
+
+  .ayah-content .arabic-side:only-child .arabic-text {
+    font-size: 25px;
+  }
+
+  .translation {
+    font-size: 15px;
+  }
+
+  .tafsir-text {
+    font-size: 14px;
+  }
+
+  .bottom-navigation {
+    margin-top: 6px;
+
+    gap: 5px;
+  }
+
+  .nav-button {
+    min-width: 75px;
+
+    height: 34px;
+
+    padding: 0 7px;
+
+    font-size: 11px;
+  }
+
+  .page-progress {
+    display: none;
+  }
+}
