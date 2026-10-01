@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify
+
+from flask import Blueprint, jsonify, request
 
 from models import Surah, Ayah, Tafsir
 
@@ -30,24 +31,31 @@ def quran_home():
 @quran_bp.route("/surahs", methods=["GET"])
 def get_surahs():
 
-    surahs = Surah.query.order_by(
-        Surah.number.asc()
-    ).all()
+    surahs = (
+        Surah.query
+        .order_by(Surah.number.asc())
+        .all()
+    )
+
+    ayahs = (
+        Ayah.query
+        .order_by(
+            Ayah.surah_id.asc(),
+            Ayah.ayah_number.asc()
+        )
+        .all()
+    )
+
+    first_page_map = {}
+
+    for ayah in ayahs:
+
+        if ayah.surah_id not in first_page_map:
+            first_page_map[ayah.surah_id] = ayah.page_number
 
     data = []
 
     for surah in surahs:
-
-        first_ayah = Ayah.query.filter_by(
-            surah_id=surah.id
-        ).order_by(
-            Ayah.ayah_number.asc()
-        ).first()
-
-        first_page = None
-
-        if first_ayah:
-            first_page = first_ayah.page_number
 
         data.append({
             "id": surah.id,
@@ -56,7 +64,7 @@ def get_surahs():
             "name_english": surah.name_english,
             "revelation_type": surah.revelation_type,
             "verses_count": surah.verses_count,
-            "first_page": first_page
+            "first_page": first_page_map.get(surah.id)
         })
 
     return jsonify({
@@ -76,9 +84,11 @@ def get_surahs():
 )
 def get_surah(surah_number):
 
-    surah = Surah.query.filter_by(
-        number=surah_number
-    ).first()
+    surah = (
+        Surah.query
+        .filter_by(number=surah_number)
+        .first()
+    )
 
     if not surah:
 
@@ -110,9 +120,11 @@ def get_surah(surah_number):
 )
 def get_surah_first_page(surah_number):
 
-    surah = Surah.query.filter_by(
-        number=surah_number
-    ).first()
+    surah = (
+        Surah.query
+        .filter_by(number=surah_number)
+        .first()
+    )
 
     if not surah:
 
@@ -121,11 +133,12 @@ def get_surah_first_page(surah_number):
             "message": "Surah not found"
         }), 404
 
-    first_ayah = Ayah.query.filter_by(
-        surah_id=surah.id
-    ).order_by(
-        Ayah.ayah_number.asc()
-    ).first()
+    first_ayah = (
+        Ayah.query
+        .filter_by(surah_id=surah.id)
+        .order_by(Ayah.ayah_number.asc())
+        .first()
+    )
 
     if not first_ayah:
 
@@ -155,9 +168,11 @@ def get_surah_first_page(surah_number):
 )
 def get_surah_ayahs(surah_number):
 
-    surah = Surah.query.filter_by(
-        number=surah_number
-    ).first()
+    surah = (
+        Surah.query
+        .filter_by(number=surah_number)
+        .first()
+    )
 
     if not surah:
 
@@ -166,11 +181,12 @@ def get_surah_ayahs(surah_number):
             "message": "Surah not found"
         }), 404
 
-    ayahs = Ayah.query.filter_by(
-        surah_id=surah.id
-    ).order_by(
-        Ayah.ayah_number.asc()
-    ).all()
+    ayahs = (
+        Ayah.query
+        .filter_by(surah_id=surah.id)
+        .order_by(Ayah.ayah_number.asc())
+        .all()
+    )
 
     data = []
 
@@ -179,7 +195,13 @@ def get_surah_ayahs(surah_number):
         data.append({
             "id": ayah.id,
             "ayah_number": ayah.ayah_number,
+
+            # Normal Arabic
             "arabic_text": ayah.arabic_text,
+
+            # Tajweed Arabic
+            "tajweed_text": ayah.tajweed_text,
+
             "translation": ayah.translation,
             "juz_number": ayah.juz_number,
             "page_number": ayah.page_number,
@@ -211,9 +233,11 @@ def get_surah_ayahs(surah_number):
 )
 def get_ayah(surah_number, ayah_number):
 
-    surah = Surah.query.filter_by(
-        number=surah_number
-    ).first()
+    surah = (
+        Surah.query
+        .filter_by(number=surah_number)
+        .first()
+    )
 
     if not surah:
 
@@ -222,10 +246,14 @@ def get_ayah(surah_number, ayah_number):
             "message": "Surah not found"
         }), 404
 
-    ayah = Ayah.query.filter_by(
-        surah_id=surah.id,
-        ayah_number=ayah_number
-    ).first()
+    ayah = (
+        Ayah.query
+        .filter_by(
+            surah_id=surah.id,
+            ayah_number=ayah_number
+        )
+        .first()
+    )
 
     if not ayah:
 
@@ -234,9 +262,11 @@ def get_ayah(surah_number, ayah_number):
             "message": "Ayah not found"
         }), 404
 
-    tafsirs = Tafsir.query.filter_by(
-        ayah_id=ayah.id
-    ).all()
+    tafsirs = (
+        Tafsir.query
+        .filter_by(ayah_id=ayah.id)
+        .all()
+    )
 
     tafsir_data = []
 
@@ -261,17 +291,22 @@ def get_ayah(surah_number, ayah_number):
         "ayah": {
             "id": ayah.id,
             "ayah_number": ayah.ayah_number,
+
+            # Normal Arabic
             "arabic_text": ayah.arabic_text,
+
+            # Tajweed Arabic
+            "tajweed_text": ayah.tajweed_text,
+
             "translation": ayah.translation,
             "juz_number": ayah.juz_number,
             "page_number": ayah.page_number,
             "hizb_number": ayah.hizb_number,
             "ruku_number": ayah.ruku_number,
             "manzil_number": ayah.manzil_number,
-            "sajdah": ayah.sajdah
-        },
-
-        "tafsirs": tafsir_data
+            "sajdah": ayah.sajdah,
+            "tafsirs": tafsir_data
+        }
     })
 
 
@@ -292,12 +327,15 @@ def get_juz(juz_number):
             "message": "Juz number must be between 1 and 30"
         }), 404
 
-    first_ayah = Ayah.query.filter_by(
-        juz_number=juz_number
-    ).order_by(
-        Ayah.page_number.asc(),
-        Ayah.ayah_number.asc()
-    ).first()
+    first_ayah = (
+        Ayah.query
+        .filter_by(juz_number=juz_number)
+        .order_by(
+            Ayah.page_number.asc(),
+            Ayah.ayah_number.asc()
+        )
+        .first()
+    )
 
     if not first_ayah:
 
@@ -332,12 +370,37 @@ def get_quran_page(page_number):
             "message": "Page number must be between 1 and 604"
         }), 404
 
-    ayahs = Ayah.query.filter_by(
-        page_number=page_number
-    ).order_by(
-        Ayah.surah_id.asc(),
-        Ayah.ayah_number.asc()
-    ).all()
+    # =====================================================
+    # READING MODE
+    # =====================================================
+
+    mode = request.args.get(
+        "mode",
+        "arabic"
+    ).lower()
+
+    allowed_modes = {
+        "arabic",
+        "translation",
+        "tafsir"
+    }
+
+    if mode not in allowed_modes:
+        mode = "arabic"
+
+    # =====================================================
+    # GET PAGE AYAHS
+    # =====================================================
+
+    ayahs = (
+        Ayah.query
+        .filter_by(page_number=page_number)
+        .order_by(
+            Ayah.surah_id.asc(),
+            Ayah.ayah_number.asc()
+        )
+        .all()
+    )
 
     if not ayahs:
 
@@ -345,6 +408,67 @@ def get_quran_page(page_number):
             "success": False,
             "message": "Quran page not found"
         }), 404
+
+    # =====================================================
+    # LOAD REQUIRED SURAHS
+    # =====================================================
+
+    surah_ids = list({
+        ayah.surah_id
+        for ayah in ayahs
+    })
+
+    surahs = (
+        Surah.query
+        .filter(
+            Surah.id.in_(surah_ids)
+        )
+        .all()
+    )
+
+    surah_map = {
+        surah.id: surah
+        for surah in surahs
+    }
+
+    # =====================================================
+    # LOAD TAFSEER ONLY WHEN NEEDED
+    # =====================================================
+
+    tafsir_map = {}
+
+    if mode == "tafsir":
+
+        ayah_ids = [
+            ayah.id
+            for ayah in ayahs
+        ]
+
+        tafsirs = (
+            Tafsir.query
+            .filter(
+                Tafsir.ayah_id.in_(ayah_ids)
+            )
+            .all()
+        )
+
+        for tafsir in tafsirs:
+
+            if tafsir.ayah_id not in tafsir_map:
+                tafsir_map[tafsir.ayah_id] = []
+
+            tafsir_map[
+                tafsir.ayah_id
+            ].append({
+                "id": tafsir.id,
+                "resource_name": tafsir.resource_name,
+                "language": tafsir.language,
+                "text": tafsir.text
+            })
+
+    # =====================================================
+    # PREVIOUS / NEXT
+    # =====================================================
 
     previous_page = None
     next_page = None
@@ -355,31 +479,50 @@ def get_quran_page(page_number):
     if page_number < 604:
         next_page = page_number + 1
 
+    # =====================================================
+    # BUILD RESPONSE
+    # =====================================================
+
     page_data = []
 
     for ayah in ayahs:
 
-        surah = Surah.query.get(
+        surah = surah_map.get(
             ayah.surah_id
         )
 
         if not surah:
             continue
 
-        tafsirs = Tafsir.query.filter_by(
-            ayah_id=ayah.id
-        ).all()
+        ayah_data = {
+            "id": ayah.id,
+            "ayah_number": ayah.ayah_number,
 
-        tafsir_data = []
+            # Normal Arabic
+            "arabic_text": ayah.arabic_text,
 
-        for tafsir in tafsirs:
+            # Tajweed Arabic
+            "tajweed_text": ayah.tajweed_text,
 
-            tafsir_data.append({
-                "id": tafsir.id,
-                "resource_name": tafsir.resource_name,
-                "language": tafsir.language,
-                "text": tafsir.text
-            })
+            "translation": ayah.translation,
+            "juz_number": ayah.juz_number,
+            "page_number": ayah.page_number,
+            "hizb_number": ayah.hizb_number,
+            "ruku_number": ayah.ruku_number,
+            "manzil_number": ayah.manzil_number,
+            "sajdah": ayah.sajdah
+        }
+
+        # =================================================
+        # TAFSEER
+        # =================================================
+
+        if mode == "tafsir":
+
+            ayah_data["tafsirs"] = tafsir_map.get(
+                ayah.id,
+                []
+            )
 
         page_data.append({
 
@@ -389,25 +532,18 @@ def get_quran_page(page_number):
                 "name_english": surah.name_english
             },
 
-            "ayah": {
-                "id": ayah.id,
-                "ayah_number": ayah.ayah_number,
-                "arabic_text": ayah.arabic_text,
-                "translation": ayah.translation,
-                "juz_number": ayah.juz_number,
-                "page_number": ayah.page_number,
-                "hizb_number": ayah.hizb_number,
-                "ruku_number": ayah.ruku_number,
-                "manzil_number": ayah.manzil_number,
-                "sajdah": ayah.sajdah
-            },
-
-            "tafsirs": tafsir_data
+            "ayah": ayah_data
         })
+
+    # =====================================================
+    # RESPONSE
+    # =====================================================
 
     return jsonify({
 
         "success": True,
+
+        "mode": mode,
 
         "page": {
             "current": page_number,
@@ -420,3 +556,4 @@ def get_quran_page(page_number):
 
         "ayahs": page_data
     })
+

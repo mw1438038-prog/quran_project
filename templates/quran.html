@@ -8,6 +8,12 @@
 
     <title>Quran Reading</title>
 
+    <!-- Noto Kufi Arabic -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/quran.css') }}"
@@ -16,9 +22,13 @@
 
   <body>
     <main class="container">
+      <!-- =====================================================
+           CONTROL HEADER
+      ====================================================== -->
+
       <section class="page-control">
         <div class="surah-selector">
-          <label for="surahSelect"> Surah </label>
+          <label for="surahSelect">Surah</label>
 
           <select id="surahSelect">
             <option value="">Select Surah</option>
@@ -26,7 +36,7 @@
         </div>
 
         <div class="surah-selector">
-          <label for="juzSelect"> Para / Juz </label>
+          <label for="juzSelect">Para / Juz</label>
 
           <select id="juzSelect">
             <option value="">Select Para</option>
@@ -34,17 +44,17 @@
         </div>
 
         <div class="page-info">
-          <span class="page-label"> Quran Page </span>
+          <span class="page-label">Quran Page</span>
 
           <div class="page-number-box">
             <input type="number" id="pageInput" min="1" max="604" value="1" />
 
-            <span> / 604 </span>
+            <span>/ 604</span>
           </div>
         </div>
 
         <div class="surah-selector">
-          <label for="readingMode"> Reading Mode </label>
+          <label for="readingMode">Reading Mode</label>
 
           <select id="readingMode">
             <option value="arabic">Arabic Only</option>
@@ -56,15 +66,27 @@
         </div>
       </section>
 
+      <!-- =====================================================
+           QURAN PAGE
+      ====================================================== -->
+
       <section class="quran-page">
         <div class="quran-page-header">
-          <div>
-            <span class="small-title"> THE HOLY QURAN </span>
+          <!-- Quran Title + Icon -->
 
-            <h2 id="surahTitle">Loading...</h2>
+          <div class="quran-heading">
+            <div class="quran-icon" aria-label="Quran">📖</div>
 
-            <span class="juz-title" id="juzTitle"> Para 1 </span>
+            <div class="quran-title-content">
+              <span class="small-title"> THE HOLY QURAN </span>
+
+              <h2 id="surahTitle">Loading...</h2>
+
+              <span class="juz-title" id="juzTitle"> Para 1 </span>
+            </div>
           </div>
+
+          <!-- Page Badge -->
 
           <div class="page-badge">
             Page
@@ -73,7 +95,15 @@
           </div>
         </div>
 
+        <!-- =====================================================
+             BISMILLAH
+        ====================================================== -->
+
         <div class="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+
+        <!-- =====================================================
+             LOADING
+        ====================================================== -->
 
         <div class="loading" id="loading">
           <div class="loader"></div>
@@ -81,10 +111,22 @@
           <p>Loading Quran...</p>
         </div>
 
+        <!-- =====================================================
+             ERROR
+        ====================================================== -->
+
         <div class="error-message" id="errorMessage"></div>
+
+        <!-- =====================================================
+             AYAH LIST
+        ====================================================== -->
 
         <div class="ayah-list" id="ayahList"></div>
       </section>
+
+      <!-- =====================================================
+           BOTTOM NAVIGATION
+      ====================================================== -->
 
       <section class="bottom-navigation">
         <button class="nav-button" id="previousPageBottom" type="button">
@@ -104,6 +146,8 @@
         </button>
       </section>
     </main>
+
+    <!-- Quran JavaScript -->
 
     <script src="{{ url_for('static', filename='js/quran.js') }}"></script>
   </body>

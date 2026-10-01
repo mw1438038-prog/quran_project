@@ -96,7 +96,7 @@ class QuranService:
         all_verses = []
 
         page = 1
-        per_page = 50
+        per_page = 40
 
         while True:
 
@@ -114,7 +114,7 @@ class QuranService:
                         "page_number"
                     ),
                 },
-                timeout=30
+                timeout=10
             )
 
             if not response.ok:
@@ -286,7 +286,7 @@ class QuranService:
         )
 
         if not response.ok:
-            print("Tafsirs error:")
+
             print(response.text)
             response.raise_for_status()
 
@@ -299,30 +299,11 @@ class QuranService:
 
 if __name__ == "__main__":
 
-    print("Quran API test started")
+
 
     service = QuranService()
 
-    print(
-        "Client ID found:",
-        bool(service.client_id)
-    )
-
-    print(
-        "Client Secret found:",
-        bool(service.client_secret)
-    )
-
-    print(
-        "Environment:",
-        service.environment
-    )
-
-    # ---------------------------------------------------------
-    # CHAPTER TEST
-    # ---------------------------------------------------------
-
-    print("\nTesting chapters...")
+    
 
     chapters_data = service.get_chapters()
 

@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from config import Config
 from extensions import db
 
-from models import Surah, Ayah, Tafsir
+
 from routes.quran import quran_bp
 
 
