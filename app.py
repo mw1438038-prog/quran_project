@@ -1,9 +1,7 @@
-
 from flask import Flask, render_template
 
 from config import Config
 from extensions import db
-
 
 from routes.quran import quran_bp
 
@@ -28,12 +26,7 @@ def create_app():
     @app.route("/")
     def home():
 
-        return """
-        <h2>Quran App Running</h2>
-        <p>
-            <a href="/quran">Open Quran</a>
-        </p>
-        """
+        return render_template("index.html")
 
     # =====================================================
     # QURAN UI
@@ -53,4 +46,3 @@ app = create_app()
 if __name__ == "__main__":
 
     app.run(debug=True)
-

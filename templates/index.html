@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Quran — The Holy Quran</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="pattern"></div>
+
+    <header class="navbar">
+      <div class="logo">
+        <span class="logo-symbol">☪</span>
+        <span>Al-Quran</span>
+      </div>
+
+      <a href="/quran" class="nav-button"> Open Quran </a>
+    </header>
+
+    <main class="hero">
+      <div class="ornament">۞</div>
+
+      <p class="arabic-small">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+
+      <h1>The Holy Quran</h1>
+
+      <p class="subtitle">Read, reflect and connect with the words of Allah.</p>
+
+      <p class="arabic-main">الْقُرْآنُ الْكَرِيمُ</p>
+
+      <div class="buttons">
+        <a href="/quran" class="primary-btn"> 📖 Start Reading </a>
+
+        <a href="/quran" class="secondary-btn"> Explore Quran </a>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <span>📖</span>
+          <div>
+            <strong>Quran Reading</strong>
+            <small>Read the Holy Quran</small>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span>🌙</span>
+          <div>
+            <strong>Peace & Reflection</strong>
+            <small>Take a moment to reflect</small>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span>✨</span>
+          <div>
+            <strong>Easy Reading</strong>
+            <small>Beautiful Quran interface</small>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>May the Quran illuminate your heart and guide your path.</p>
+      <span>© 2026 Al-Quran</span>
+    </footer>
+  </body>
+</html>
