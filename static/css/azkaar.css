@@ -1,0 +1,488 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(184, 154, 99, 0.12),
+      transparent 30%
+    ),
+    #f7faf8;
+
+  color: #173f2d;
+
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.azkaar-container {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: auto;
+
+  padding: 20px;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.azkaar-header {
+  position: relative;
+
+  padding: 28px;
+
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(134, 239, 172, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #064e3b, #047857, #065f46);
+
+  color: white;
+
+  box-shadow: 0 10px 30px rgba(6, 78, 59, 0.15);
+
+  overflow: hidden;
+}
+
+.azkaar-header::after {
+  content: "۞";
+
+  position: absolute;
+
+  right: 25px;
+  top: -35px;
+
+  font-size: 150px;
+
+  color: rgba(255, 255, 255, 0.05);
+}
+
+.back-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;
+
+  margin-bottom: 20px;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  color: white;
+
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  font-size: 13px;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.header-content {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.header-icon {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  font-size: 34px;
+}
+
+.small-title {
+  font-size: 11px;
+
+  letter-spacing: 3px;
+
+  color: #d1fae5;
+
+  font-weight: 700;
+}
+
+.azkaar-header h1 {
+  margin-top: 4px;
+
+  font-size: 30px;
+
+  font-weight: 700;
+}
+
+.azkaar-header p {
+  margin-top: 3px;
+
+  font-family: "Amiri Quran", serif;
+
+  font-size: 22px;
+
+  color: #e2cf9f;
+}
+
+/* =====================================================
+   CATEGORIES
+===================================================== */
+
+.categories {
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 10px;
+
+  margin: 20px 0;
+}
+
+.category {
+  min-height: 75px;
+
+  border: 1px solid #dce7df;
+
+  border-radius: 12px;
+
+  background: white;
+
+  color: #315b45;
+
+  cursor: pointer;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  font-size: 23px;
+
+  transition: 0.2s;
+}
+
+.category span {
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.category:hover {
+  transform: translateY(-2px);
+
+  border-color: #9abb9f;
+}
+
+.category.active {
+  background: #174f36;
+
+  color: white;
+
+  border-color: #174f36;
+
+  box-shadow: 0 5px 15px rgba(23, 79, 54, 0.18);
+}
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin: 25px 0 15px;
+}
+
+.section-title span {
+  font-size: 22px;
+}
+
+.section-title h2 {
+  font-size: 20px;
+
+  color: #174f36;
+}
+
+/* =====================================================
+   ZIKR CARD
+===================================================== */
+
+.zikr-card {
+  margin-bottom: 15px;
+
+  padding: 24px;
+
+  background: white;
+
+  border: 1px solid #e1e9e3;
+
+  border-radius: 15px;
+
+  box-shadow: 0 4px 15px rgba(39, 70, 50, 0.05);
+}
+
+.zikr-number {
+  color: #8b6c38;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  margin-bottom: 12px;
+}
+
+.zikr-arabic {
+  direction: rtl;
+
+  text-align: right;
+
+  font-family: "Amiri Quran", serif;
+
+  font-size: 29px;
+
+  line-height: 2.2;
+
+  color: #174f36;
+}
+
+.zikr-translation {
+  margin-top: 15px;
+
+  padding: 14px 17px;
+
+  border-right: 4px solid #6f9b7b;
+
+  border-radius: 8px;
+
+  background: #f5faf6;
+
+  direction: rtl;
+
+  text-align: right;
+
+  font-family: "Noto Naskh Arabic", serif;
+
+  font-size: 17px;
+
+  line-height: 2;
+}
+
+.zikr-reference {
+  margin-top: 12px;
+
+  color: #7b877f;
+
+  font-size: 11px;
+}
+
+/* =====================================================
+   TASBEEH
+===================================================== */
+
+.tasbeeh-card {
+  margin: 30px 0;
+
+  padding: 30px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  background: linear-gradient(135deg, #f8f3e8, #fffdf8);
+
+  border: 1px solid #e5d9bf;
+}
+
+.tasbeeh-icon {
+  font-size: 35px;
+}
+
+.tasbeeh-card h2 {
+  margin-top: 8px;
+
+  color: #174f36;
+}
+
+.tasbeeh-card p {
+  margin-top: 4px;
+
+  color: #718078;
+
+  font-size: 13px;
+}
+
+.counter {
+  margin: 20px auto;
+
+  font-size: 45px;
+
+  font-weight: 800;
+
+  color: #174f36;
+}
+
+.counter-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.count-button,
+.counter-small {
+  height: 45px;
+
+  border-radius: 9px;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+.count-button {
+  min-width: 120px;
+
+  background: #174f36;
+
+  color: white;
+}
+
+.counter-small {
+  width: 45px;
+
+  background: white;
+
+  border: 1px solid #ccd9cf;
+
+  color: #315b45;
+
+  font-size: 20px;
+}
+
+.count-button:hover,
+.counter-small:hover {
+  transform: translateY(-1px);
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+  .azkaar-container {
+    padding: 10px;
+  }
+
+  .azkaar-header {
+    padding: 20px;
+  }
+
+  .header-icon {
+    width: 52px;
+    height: 52px;
+
+    font-size: 27px;
+  }
+
+  .azkaar-header h1 {
+    font-size: 23px;
+  }
+
+  .categories {
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 7px;
+  }
+
+  .category {
+    min-height: 68px;
+
+    font-size: 19px;
+  }
+
+  .category span {
+    font-size: 10px;
+  }
+
+  .zikr-card {
+    padding: 17px;
+  }
+
+  .zikr-arabic {
+    font-size: 23px;
+
+    line-height: 2.1;
+  }
+
+  .zikr-translation {
+    font-size: 15px;
+  }
+
+  .tasbeeh-card {
+    padding: 22px 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .azkaar-header h1 {
+    font-size: 21px;
+  }
+
+  .zikr-arabic {
+    font-size: 21px;
+  }
+}

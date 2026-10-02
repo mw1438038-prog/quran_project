@@ -7,17 +7,21 @@
 body {
   min-height: 100vh;
   font-family: "Inter", sans-serif;
+
   background: radial-gradient(
     circle at 50% 35%,
     #174c42 0%,
     #0b302b 35%,
     #061c1a 75%
   );
+
   color: #f8f1dc;
   overflow-x: hidden;
 }
 
-/* Islamic geometric background */
+/* =========================
+   ISLAMIC BACKGROUND
+========================= */
 
 .pattern {
   position: fixed;
@@ -34,14 +38,18 @@ body {
   background-size: 90px 90px;
 }
 
-/* Navbar */
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar {
   width: 100%;
   padding: 24px 7%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   position: relative;
   z-index: 5;
 }
@@ -66,6 +74,7 @@ body {
   text-decoration: none;
 
   border: 1px solid rgba(216, 182, 106, 0.55);
+
   padding: 10px 20px;
   border-radius: 30px;
 
@@ -77,7 +86,9 @@ body {
   color: #09221f;
 }
 
-/* Hero */
+/* =========================
+   HERO
+========================= */
 
 .hero {
   min-height: calc(100vh - 150px);
@@ -85,6 +96,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   text-align: center;
 
   padding: 65px 20px 40px;
@@ -101,13 +113,16 @@ body {
 
 .arabic-small {
   font-family: "Amiri", serif;
+
   color: #e5c77e;
   font-size: 27px;
+
   margin-bottom: 20px;
 }
 
 h1 {
   font-family: "Amiri", serif;
+
   font-size: clamp(55px, 8vw, 95px);
   font-weight: 700;
   line-height: 1.05;
@@ -116,6 +131,7 @@ h1 {
 
   -webkit-background-clip: text;
   background-clip: text;
+
   color: transparent;
 
   text-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
@@ -123,10 +139,12 @@ h1 {
 
 .subtitle {
   max-width: 620px;
+
   margin-top: 20px;
 
   font-size: 18px;
   line-height: 1.7;
+
   color: #c8d8d3;
 }
 
@@ -139,28 +157,52 @@ h1 {
   color: #f3d88e;
 }
 
-/* Buttons */
+/* =========================
+   BUTTONS
+========================= */
 
 .buttons {
+  width: 100%;
+
   display: flex;
-  gap: 15px;
-  margin-top: 32px;
+  justify-content: center;
+  align-items: center;
 
   flex-wrap: wrap;
-  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 25px;
 }
 
 .buttons a {
-  text-decoration: none;
-  padding: 14px 28px;
-  border-radius: 30px;
+  display: inline-flex;
 
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  visibility: visible;
+  opacity: 1;
+
+  min-height: 44px;
+
+  padding: 11px 18px;
+
+  border-radius: 9px;
+
+  font-size: 14px;
   font-weight: 600;
+
+  cursor: pointer;
+
   transition: 0.3s;
 }
 
 .primary-btn {
   background: linear-gradient(135deg, #d8b66a, #f0d48a);
+
   color: #09221f;
 
   box-shadow: 0 10px 30px rgba(216, 182, 106, 0.2);
@@ -168,69 +210,112 @@ h1 {
 
 .primary-btn:hover {
   transform: translateY(-3px);
+
   box-shadow: 0 15px 35px rgba(216, 182, 106, 0.35);
 }
 
 .secondary-btn {
   border: 1px solid rgba(216, 182, 106, 0.6);
+
   color: #f8f1dc;
+
+  background: transparent;
 }
 
 .secondary-btn:hover {
   background: rgba(216, 182, 106, 0.12);
+
   transform: translateY(-3px);
 }
 
-/* Features */
+/* =========================
+   FEATURES
+   4 CARDS IN ONE LINE
+========================= */
 
 .features {
+  width: min(1100px, 100%);
+
   margin-top: 65px;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
 
-  width: min(900px, 100%);
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 15px;
 }
 
 .feature {
+  min-width: 0;
+
   display: flex;
   align-items: center;
-  gap: 15px;
+
+  gap: 12px;
 
   text-align: left;
 
-  padding: 18px;
+  padding: 16px;
 
   border: 1px solid rgba(216, 182, 106, 0.18);
+
   border-radius: 16px;
 
   background: rgba(255, 255, 255, 0.035);
+
   backdrop-filter: blur(8px);
+
+  transition:
+    transform 0.3s,
+    background 0.3s,
+    border-color 0.3s;
+}
+
+.feature:hover {
+  transform: translateY(-3px);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border-color: rgba(216, 182, 106, 0.35);
 }
 
 .feature > span {
+  flex-shrink: 0;
+
   font-size: 27px;
 }
 
 .feature strong {
   display: block;
+
   font-size: 14px;
+
   margin-bottom: 5px;
+
+  white-space: nowrap;
 }
 
 .feature small {
+  display: block;
+
   color: #9fb4ae;
-  font-size: 12px;
+
+  font-size: 11px;
+
+  line-height: 1.4;
 }
 
-/* Footer */
+/* =========================
+   FOOTER
+========================= */
 
 footer {
   text-align: center;
+
   padding: 25px 20px 35px;
 
   color: #8fa9a3;
+
   font-size: 13px;
 
   position: relative;
@@ -239,13 +324,29 @@ footer {
 
 footer span {
   display: block;
+
   margin-top: 8px;
+
   color: #6f8983;
 }
 
-/* Mobile */
+/* =========================
+   TABLET
+========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
+  .features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    max-width: 700px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
   .navbar {
     padding: 20px;
   }
@@ -279,12 +380,66 @@ footer span {
     font-size: 34px;
   }
 
+  /* Buttons */
+
+  .buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .buttons a {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Features 2 x 2 */
+
   .features {
-    grid-template-columns: 1fr;
-    max-width: 450px;
+    width: 100%;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    max-width: 500px;
   }
 
   .feature {
-    text-align: left;
+    padding: 13px;
+
+    gap: 9px;
+
+    border-radius: 13px;
+  }
+
+  .feature > span {
+    font-size: 23px;
+  }
+
+  .feature strong {
+    font-size: 12px;
+
+    white-space: normal;
+  }
+
+  .feature small {
+    font-size: 10px;
+  }
+}
+
+/* =========================
+   VERY SMALL MOBILE
+========================= */
+
+@media (max-width: 400px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .feature {
+    width: 100%;
   }
 }

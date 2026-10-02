@@ -1,0 +1,701 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(184, 154, 99, 0.1),
+      transparent 25%
+    ),
+    radial-gradient(circle at 90% 80%, rgba(6, 78, 59, 0.08), transparent 30%),
+    #f7faf8;
+
+  color: #173f2d;
+
+  font-family: "Inter", Arial, sans-serif;
+}
+
+/* =====================================
+   MAIN CONTAINER
+===================================== */
+
+.namaz-container {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: auto;
+
+  padding: 20px;
+}
+
+/* =====================================
+   ISLAMIC HEADER
+===================================== */
+
+.namaz-header {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 42px 25px 35px;
+
+  text-align: center;
+
+  border-radius: 24px;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(255, 255, 255, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(212, 175, 55, 0.15),
+      transparent 25%
+    ),
+    linear-gradient(135deg, #063b2b, #075c40, #064e3b);
+
+  box-shadow: 0 15px 40px rgba(6, 78, 59, 0.18);
+}
+
+/* Islamic decorative symbols */
+
+.namaz-header::before {
+  content: "۞";
+
+  position: absolute;
+
+  left: 20px;
+  top: 10px;
+
+  font-size: 115px;
+
+  color: rgba(255, 255, 255, 0.045);
+}
+
+.namaz-header::after {
+  content: "۞";
+
+  position: absolute;
+
+  right: 20px;
+  bottom: -35px;
+
+  font-size: 145px;
+
+  color: rgba(212, 175, 55, 0.06);
+}
+
+/* =====================================
+   BACK BUTTON
+===================================== */
+
+.back-button {
+  position: absolute;
+
+  left: 20px;
+  top: 20px;
+
+  z-index: 5;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  font-size: 13px;
+
+  transition: 0.2s;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+
+  transform: translateY(-1px);
+}
+
+/* =====================================
+   HEADER CONTENT
+===================================== */
+
+.header-icon {
+  position: relative;
+  z-index: 2;
+
+  font-size: 44px;
+
+  margin-bottom: 8px;
+}
+
+.small-title {
+  position: relative;
+  z-index: 2;
+
+  color: #e7d7ad;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 4px;
+}
+
+.namaz-header h1 {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 7px;
+
+  font-size: 32px;
+
+  font-weight: 700;
+}
+
+.arabic-title {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 5px;
+
+  color: #ead8a9;
+
+  font-family: "Amiri Quran", "Amiri", serif;
+
+  font-size: 27px;
+}
+
+.location-box {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-top: 20px;
+
+  padding: 9px 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  font-size: 13px;
+}
+
+.date {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 9px;
+
+  color: #d1fae5;
+
+  font-size: 12px;
+}
+
+/* =====================================
+   NEXT PRAYER
+===================================== */
+
+.next-prayer {
+  position: relative;
+
+  overflow: hidden;
+
+  margin: 22px auto;
+
+  max-width: 700px;
+
+  padding: 25px;
+
+  text-align: center;
+
+  border: 1px solid #dfd3b7;
+
+  border-radius: 20px;
+
+  background:
+    radial-gradient(circle at top, rgba(212, 175, 55, 0.13), transparent 55%),
+    #fffdf8;
+
+  box-shadow: 0 8px 25px rgba(90, 70, 30, 0.07);
+}
+
+.next-prayer::before {
+  content: "☪";
+
+  position: absolute;
+
+  left: 22px;
+  top: 12px;
+
+  color: rgba(139, 108, 56, 0.1);
+
+  font-size: 45px;
+}
+
+.next-prayer::after {
+  content: "☪";
+
+  position: absolute;
+
+  right: 22px;
+  bottom: 5px;
+
+  color: rgba(139, 108, 56, 0.1);
+
+  font-size: 45px;
+}
+
+.next-label {
+  color: #9a783b;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.next-name {
+  margin-top: 6px;
+
+  color: #174f36;
+
+  font-size: 28px;
+
+  font-weight: 700;
+}
+
+.next-time {
+  margin-top: 3px;
+
+  color: #8b6c38;
+
+  font-size: 19px;
+
+  font-weight: 600;
+}
+
+.countdown {
+  margin-top: 9px;
+
+  color: #718078;
+
+  font-size: 12px;
+}
+
+/* =====================================
+   SECTION TITLE
+===================================== */
+
+.section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 30px 0 16px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #dfe8e1;
+}
+
+.section-title span {
+  font-size: 22px;
+}
+
+.section-title h2 {
+  color: #174f36;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+/* =====================================
+   PRAYER GRID
+===================================== */
+
+.prayer-list {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+/* =====================================
+   PRAYER CARD
+===================================== */
+
+.prayer-card {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  min-height: 82px;
+
+  padding: 15px 18px;
+
+  overflow: hidden;
+
+  border: 1px solid #dfe8e1;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(39, 70, 50, 0.04);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.prayer-card::after {
+  content: "۞";
+
+  position: absolute;
+
+  right: -10px;
+  bottom: -23px;
+
+  color: rgba(23, 79, 54, 0.035);
+
+  font-size: 75px;
+}
+
+.prayer-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #a7bea9;
+
+  box-shadow: 0 8px 20px rgba(39, 70, 50, 0.08);
+}
+
+/* =====================================
+   LEFT SIDE
+===================================== */
+
+.prayer-left {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.prayer-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d8e5da;
+
+  border-radius: 12px;
+
+  background: #f0f7f2;
+
+  font-size: 21px;
+}
+
+.prayer-name {
+  color: #174f36;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.prayer-arabic {
+  margin-top: 2px;
+
+  color: #8a968e;
+
+  font-family: "Amiri", serif;
+
+  font-size: 16px;
+}
+
+/* =====================================
+   TIME
+===================================== */
+
+.prayer-time {
+  position: relative;
+  z-index: 2;
+
+  color: #174f36;
+
+  font-size: 19px;
+
+  font-weight: 700;
+}
+
+/* =====================================
+   ACTIVE / NEXT PRAYER
+===================================== */
+
+.prayer-card.active {
+  border-color: #b99a5b;
+
+  background: linear-gradient(135deg, #fffdf8, #f8f3e8);
+
+  box-shadow: 0 7px 20px rgba(139, 108, 56, 0.1);
+}
+
+.prayer-card.active::before {
+  content: "NEXT";
+
+  position: absolute;
+
+  right: 10px;
+  top: 7px;
+
+  color: #9a783b;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.prayer-card.active .prayer-icon {
+  color: white;
+
+  border-color: #174f36;
+
+  background: #174f36;
+}
+
+/* =====================================
+   INFORMATION CARD
+===================================== */
+
+.info-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-top: 25px;
+
+  padding: 17px 20px;
+
+  border: 1px solid #e5d9bf;
+
+  border-radius: 14px;
+
+  background: #fffdf8;
+}
+
+.info-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f5eee0;
+
+  font-size: 18px;
+}
+
+.info-card strong {
+  color: #174f36;
+
+  font-size: 13px;
+}
+
+.info-card p {
+  margin-top: 3px;
+
+  color: #7a857e;
+
+  font-size: 11px;
+}
+
+/* =====================================
+   FOOTER
+===================================== */
+
+footer {
+  padding: 30px 0 10px;
+
+  text-align: center;
+
+  color: #718078;
+
+  font-size: 12px;
+}
+
+footer span {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #9a783b;
+
+  font-size: 10px;
+}
+
+/* =====================================
+   LOADING
+===================================== */
+
+.loading {
+  grid-column: 1 / -1;
+
+  padding: 35px;
+
+  text-align: center;
+
+  color: #718078;
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 700px) {
+  .namaz-container {
+    padding: 10px;
+  }
+
+  .namaz-header {
+    padding: 40px 15px 28px;
+
+    border-radius: 18px;
+  }
+
+  .namaz-header h1 {
+    font-size: 25px;
+  }
+
+  .arabic-title {
+    font-size: 23px;
+  }
+
+  .header-icon {
+    font-size: 37px;
+  }
+
+  .prayer-list {
+    grid-template-columns: 1fr;
+  }
+
+  .next-prayer {
+    padding: 22px 15px;
+  }
+
+  .next-name {
+    font-size: 25px;
+  }
+
+  .prayer-card {
+    min-height: 76px;
+  }
+}
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+  .namaz-container {
+    padding: 7px;
+  }
+
+  .namaz-header {
+    padding: 38px 12px 25px;
+  }
+
+  .back-button {
+    left: 12px;
+    top: 12px;
+
+    padding: 7px 11px;
+
+    font-size: 12px;
+  }
+
+  .small-title {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+  }
+
+  .namaz-header h1 {
+    font-size: 23px;
+  }
+
+  .location-box {
+    max-width: 90%;
+
+    font-size: 11px;
+  }
+
+  .prayer-card {
+    padding: 13px;
+  }
+
+  .prayer-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .prayer-time {
+    font-size: 17px;
+  }
+}

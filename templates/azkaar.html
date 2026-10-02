@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Zikr & Azkaar</title>
+
+    <!-- Arabic Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Azkaar CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/azkaar.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="azkaar-container">
+      <!-- ================================
+         HEADER
+    ================================= -->
+
+      <header class="azkaar-header">
+        <a href="/quran" class="back-button"> ← Quran </a>
+
+        <div class="header-content">
+          <div class="header-icon">📿</div>
+
+          <div class="header-text">
+            <div class="small-title">DAILY REMEMBRANCE</div>
+
+            <h1>Zikr & Azkaar</h1>
+
+            <p>ذِكْرُ اللّٰهِ</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================================
+         CATEGORIES
+    ================================= -->
+
+      <section class="categories">
+        <button class="category active" data-category="morning" type="button">
+          <span class="category-icon">🌅</span>
+          <span>Morning</span>
+        </button>
+
+        <button class="category" data-category="evening" type="button">
+          <span class="category-icon">🌙</span>
+          <span>Evening</span>
+        </button>
+
+        <button class="category" data-category="salah" type="button">
+          <span class="category-icon">🕌</span>
+          <span>After Salah</span>
+        </button>
+
+        <button class="category" data-category="daily" type="button">
+          <span class="category-icon">🤲</span>
+          <span>Daily Duas</span>
+        </button>
+
+        <button class="category" data-category="protection" type="button">
+          <span class="category-icon">🛡️</span>
+          <span>Protection</span>
+        </button>
+
+        <button class="category" data-category="general" type="button">
+          <span class="category-icon">❤️</span>
+          <span>General Zikr</span>
+        </button>
+      </section>
+
+      <!-- ================================
+         AZKAAR CONTENT
+    ================================= -->
+
+      <main class="azkaar-content">
+        <div class="section-title">
+          <span class="section-icon"> 🌿 </span>
+
+          <h2 id="sectionTitle">Morning Azkaar</h2>
+        </div>
+
+        <!-- JavaScript yahan Azkaar cards add karega -->
+
+        <div id="azkaarList"></div>
+      </main>
+
+      <!-- ================================
+         TASBEEH COUNTER
+    ================================= -->
+
+      <section class="tasbeeh-card">
+        <div class="tasbeeh-icon">📿</div>
+
+        <h2>Tasbeeh Counter</h2>
+
+        <p>Keep track of your daily zikr</p>
+
+        <div id="counter" class="counter">0</div>
+
+        <div class="counter-buttons">
+          <button
+            id="minusButton"
+            class="counter-small"
+            type="button"
+            aria-label="Decrease count"
+          >
+            −
+          </button>
+
+          <button id="countButton" class="count-button" type="button">
+            + Zikr
+          </button>
+
+          <button
+            id="resetButton"
+            class="counter-small"
+            type="button"
+            aria-label="Reset counter"
+          >
+            ↻
+          </button>
+        </div>
+      </section>
+
+      <!-- ================================
+         FOOTER
+    ================================= -->
+
+      <footer class="azkaar-footer">
+        <div>📖 Quran &nbsp; • &nbsp; 📿 Zikr & Azkaar</div>
+
+        <p>Remember Allah and find peace.</p>
+      </footer>
+    </div>
+
+    <!-- ================================
+     JAVASCRIPT
+================================= -->
+
+    <script src="{{ url_for('static', filename='js/azkaar.js') }}"></script>
+  </body>
+</html>

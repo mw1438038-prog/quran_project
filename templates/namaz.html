@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Namaz Timing</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/namaz.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="namaz-container">
+      <!-- HEADER -->
+
+      <header class="namaz-header">
+        <a href="/" class="back-button"> ← Home </a>
+
+        <div class="header-icon">🕌</div>
+
+        <div class="small-title">DAILY PRAYER</div>
+
+        <h1>Namaz Timing</h1>
+
+        <p class="arabic-title">أَوْقَاتُ الصَّلَاةِ</p>
+
+        <div class="location-box">📍 <span id="location">Loading...</span></div>
+
+        <div id="date" class="date">Loading date...</div>
+      </header>
+
+      <!-- NEXT PRAYER -->
+
+      <section class="next-prayer">
+        <div class="next-label">NEXT PRAYER</div>
+
+        <div id="nextPrayer" class="next-name">Loading...</div>
+
+        <div id="nextTime" class="next-time">--:--</div>
+
+        <div id="countdown" class="countdown">--</div>
+      </section>
+
+      <!-- PRAYER TIMES -->
+
+      <main>
+        <div class="section-title">
+          <span>🕌</span>
+          <h2>Today's Prayer Times</h2>
+        </div>
+
+        <div id="prayerList" class="prayer-list">
+          <div class="loading">Loading prayer times...</div>
+        </div>
+      </main>
+
+      <!-- CALCULATION INFO -->
+
+      <section class="info-card">
+        <div class="info-icon">ℹ️</div>
+
+        <div>
+          <strong>Calculation Method</strong>
+
+          <p>University of Islamic Sciences, Karachi</p>
+        </div>
+      </section>
+
+      <footer>
+        <p>May Allah accept our prayers.</p>
+
+        <span> © 2026 Al-Quran </span>
+      </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/namaz.js') }}"></script>
+  </body>
+</html>
