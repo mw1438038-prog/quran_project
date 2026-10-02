@@ -1,5 +1,7 @@
 let currentPage = 1;
+
 let readingMode = "arabic";
+
 let currentQuranData = null;
 
 /* =========================================================
@@ -7,6 +9,9 @@ let currentQuranData = null;
 ========================================================= */
 
 let currentAudio = null;
+
+let nextSurahAudio = null;
+
 let currentAudioButton = null;
 
 /* =========================================================
@@ -14,16 +19,21 @@ let currentAudioButton = null;
 ========================================================= */
 
 let surahAudioFiles = [];
+
 let surahAudioIndex = 0;
 
 let isSurahPlaying = false;
+
 let isSurahPaused = false;
 
 let surahAudio = null;
 
 let playSurahButton = null;
+
 let pauseSurahButton = null;
+
 let stopSurahButton = null;
+
 let surahAudioStatus = null;
 
 /* =========================================================
@@ -531,41 +541,20 @@ async function playCompleteSurah() {
 
   await playSurahAyah(surahAudioIndex);
 }
-
-/* =========================================================
-   PLAY SURAH AYAH
-========================================================= */
-
-async function playSurahAyah(index) {
+async function playSurahAyah(index, preloadedAudio = null) {
   if (index < 0 || index >= surahAudioFiles.length) {
     finishSurahAudio();
-
     return;
-  }
-
-  /*
-   * Stop previous Surah audio
-   */
-
-  if (surahAudio) {
-    surahAudio.pause();
-
-    surahAudio.currentTime = 0;
-
-    surahAudio = null;
   }
 
   surahAudioIndex = index;
 
   const audioFile = surahAudioFiles[index];
-
   const audioUrl = buildAudioUrl(audioFile.url);
 
   if (!audioUrl) {
     console.error("Audio URL missing:", audioFile);
-
     await playSurahAyah(index + 1);
-
     return;
   }
 
@@ -576,40 +565,184 @@ async function playSurahAyah(index) {
   );
 
   /*
-   * Create audio
+   * ---------------------------------------------------------
+   * CURRENT AUDIO
+   * ---------------------------------------------------------
    */
 
-  const audio = new Audio(audioUrl);
+  let audio = preloadedAudio;
 
-  audio.preload = "auto";
+  /*
+   * Agar function ko preloaded audio nahi mila
+   * to check karein ke next audio already preload hai.
+   */
+
+  if (!audio) {
+    if (nextSurahAudio && nextSurahAudio.dataset.index === String(index)) {
+      audio = nextSurahAudio;
+      nextSurahAudio = null;
+    }
+  }
+
+  /*
+   * Agar preload available nahi hai
+   * to naya audio create karein.
+   */
+
+  if (!audio) {
+    audio = new Audio(audioUrl);
+    audio.preload = "auto";
+    audio.src = audioUrl;
+    audio.load();
+  }
+
+  /*
+   * Purana audio stop karein.
+   * Lekin agar wahi audio current ban raha hai
+   * to usko destroy nahi karna.
+   */
+
+  if (surahAudio && surahAudio !== audio) {
+    surahAudio.pause();
+    surahAudio.src = "";
+    surahAudio.load();
+  }
+
+  /*
+   * New current audio
+   */
 
   surahAudio = audio;
 
   isSurahPlaying = true;
-
   isSurahPaused = false;
 
   updateSurahAudioButtons();
 
   /*
-   * Finished
+   * ---------------------------------------------------------
+   * PRELOAD NEXT AYAH
+   * ---------------------------------------------------------
    */
 
-  audio.addEventListener("ended", async function () {
+  const nextIndex = index + 1;
+
+  if (nextIndex < surahAudioFiles.length) {
+    /*
+     * Agar next audio already correct Ayah ka preload hai
+     * to dobara create na karein.
+     */
+
+    if (!nextSurahAudio || nextSurahAudio.dataset.index !== String(nextIndex)) {
+      /*
+       * Purana preload remove karein
+       */
+
+      if (nextSurahAudio) {
+        nextSurahAudio.pause();
+        nextSurahAudio.src = "";
+        nextSurahAudio.load();
+        nextSurahAudio = null;
+      }
+
+      const nextFile = surahAudioFiles[nextIndex];
+      const nextUrl = buildAudioUrl(nextFile.url);
+
+      if (nextUrl) {
+        const nextAudio = new Audio();
+
+        nextAudio.preload = "auto";
+        nextAudio.src = nextUrl;
+
+        /*
+         * Important:
+         * Next Ayah ka index store kar rahe hain.
+         */
+
+        nextAudio.dataset.index = String(nextIndex);
+
+        /*
+         * Browser ko abhi se audio load karne dein.
+         */
+
+        nextAudio.load();
+
+        nextSurahAudio = nextAudio;
+      }
+    }
+  }
+
+  /*
+   * ---------------------------------------------------------
+   * AYAH FINISHED
+   * ---------------------------------------------------------
+   */
+
+  audio.onended = async function () {
+    /*
+     * Agar user ne Stop kar diya ya koi aur audio
+     * current ban gaya ho to kuch na karein.
+     */
+
     if (surahAudio !== audio) {
       return;
     }
 
-    surahAudio = null;
+    const nextIndex = index + 1;
 
-    await playSurahAyah(index + 1);
-  });
+    /*
+     * Surah complete
+     */
+
+    if (nextIndex >= surahAudioFiles.length) {
+      finishSurahAudio();
+      return;
+    }
+
+    /*
+     * -----------------------------------------------------
+     * PRELOADED NEXT AUDIO
+     * -----------------------------------------------------
+     */
+
+    if (nextSurahAudio && nextSurahAudio.dataset.index === String(nextIndex)) {
+      const nextAudio = nextSurahAudio;
+
+      /*
+       * Pehle reference remove karein.
+       */
+
+      nextSurahAudio = null;
+
+      /*
+       * IMPORTANT:
+       * Isi preloaded audio ko directly next Ayah
+       * ke taur par use karein.
+       *
+       * Dobara new Audio() create nahi hoga.
+       */
+
+      await playSurahAyah(nextIndex, nextAudio);
+
+      return;
+    }
+
+    /*
+     * -----------------------------------------------------
+     * FALLBACK
+     * -----------------------------------------------------
+     */
+
+    await playSurahAyah(nextIndex);
+  };
 
   /*
-   * Error
+   * ---------------------------------------------------------
+   * ERROR
+   * ---------------------------------------------------------
    */
 
-  audio.addEventListener("error", async function () {
+  audio.onerror = async function () {
     console.error("Surah audio browser error:", audio.error);
 
     if (surahAudio !== audio) {
@@ -619,10 +752,19 @@ async function playSurahAyah(index) {
     surahAudio = null;
 
     await playSurahAyah(index + 1);
-  });
+  };
+
+  /*
+   * ---------------------------------------------------------
+   * PLAY
+   * ---------------------------------------------------------
+   */
 
   try {
     await audio.play();
+
+    isSurahPlaying = true;
+    isSurahPaused = false;
 
     updateSurahAudioButtons();
   } catch (error) {
@@ -664,50 +806,63 @@ function pauseSurahAudio() {
 /* =========================================================
    STOP SURAH
 ========================================================= */
-
 function stopSurahAudio() {
+  /*
+   * Current audio stop
+   */
+
   if (surahAudio) {
     surahAudio.pause();
-
     surahAudio.currentTime = 0;
-
+    surahAudio.src = "";
+    surahAudio.load();
     surahAudio = null;
   }
 
-  surahAudioFiles = [];
+  /*
+   * Preloaded next audio stop
+   */
 
+  if (nextSurahAudio) {
+    nextSurahAudio.pause();
+    nextSurahAudio.currentTime = 0;
+    nextSurahAudio.src = "";
+    nextSurahAudio.load();
+    nextSurahAudio = null;
+  }
+
+  surahAudioFiles = [];
   surahAudioIndex = 0;
 
   isSurahPlaying = false;
-
   isSurahPaused = false;
 
   updateSurahAudioButtons();
-
   updateSurahAudioStatus("Ready");
 }
-
-/* =========================================================
-   SURAH AUDIO FINISHED
-========================================================= */
 
 function finishSurahAudio() {
   if (surahAudio) {
     surahAudio.pause();
-
     surahAudio.currentTime = 0;
-
+    surahAudio.src = "";
+    surahAudio.load();
     surahAudio = null;
   }
 
+  if (nextSurahAudio) {
+    nextSurahAudio.pause();
+    nextSurahAudio.currentTime = 0;
+    nextSurahAudio.src = "";
+    nextSurahAudio.load();
+    nextSurahAudio = null;
+  }
+
   isSurahPlaying = false;
-
   isSurahPaused = false;
-
   surahAudioIndex = 0;
 
   updateSurahAudioButtons();
-
   updateSurahAudioStatus("Surah completed ✓");
 
   if (playSurahButton) {
@@ -982,21 +1137,66 @@ function loadJuzList() {
 ========================================================= */
 
 if (surahSelect) {
-  surahSelect.addEventListener("change", function () {
+  surahSelect.addEventListener("change", async function () {
     const selectedOption = surahSelect.options[surahSelect.selectedIndex];
 
     if (!selectedOption) {
       return;
     }
 
+    const surahNumber = parseInt(selectedOption.value);
     const firstPage = parseInt(selectedOption.dataset.firstPage);
 
-    if (!isNaN(firstPage) && firstPage >= 1 && firstPage <= 604) {
-      loadQuranPage(firstPage);
+    if (
+      isNaN(surahNumber) ||
+      isNaN(firstPage) ||
+      firstPage < 1 ||
+      firstPage > 604
+    ) {
+      return;
+    }
+
+    try {
+      /*
+       * Pehle selected Surah ka first page load karo.
+       */
+      await loadQuranPage(firstPage);
+
+      /*
+       * IMPORTANT:
+       * First page mein sirf selected Surah ki
+       * Ayat render karo.
+       */
+      renderCurrentPage(surahNumber);
+
+      /*
+       * Page ko top par rakho.
+       */
+      window.scrollTo(0, 0);
+
+      if (quranPage) {
+        quranPage.scrollTop = 0;
+      }
+
+      /*
+       * Header ko selected Surah ke mutabiq set karo.
+       */
+      const selectedAyah = currentQuranData.ayahs.find(function (item) {
+        return Number(item.surah.number) === surahNumber;
+      });
+
+      if (selectedAyah && surahTitle) {
+        surahTitle.textContent =
+          `${selectedAyah.surah.name_english} — ` +
+          `${selectedAyah.surah.name_arabic}`;
+      }
+    } catch (error) {
+      console.error("Surah selection error:", error);
+
+      showError(error.message);
     }
   });
 }
-
 /* =========================================================
    SELECT JUZ
 ========================================================= */
@@ -1266,8 +1466,7 @@ function updateSelectors(data) {
 /* =========================================================
    RENDER CURRENT PAGE
 ========================================================= */
-
-function renderCurrentPage() {
+function renderCurrentPage(surahFilter = null) {
   if (!currentQuranData || !currentQuranData.ayahs) {
     return;
   }
@@ -1278,7 +1477,19 @@ function renderCurrentPage() {
 
   ayahList.innerHTML = "";
 
-  currentQuranData.ayahs.forEach(function (item) {
+  let ayahsToRender = currentQuranData.ayahs;
+
+  /*
+   * Agar Surah select ki gayi hai
+   * to sirf usi Surah ki Ayat render karo.
+   */
+  if (surahFilter !== null) {
+    ayahsToRender = currentQuranData.ayahs.filter(function (item) {
+      return Number(item.surah.number) === Number(surahFilter);
+    });
+  }
+
+  ayahsToRender.forEach(function (item) {
     createAyah(item);
   });
 }
@@ -1701,6 +1912,9 @@ function createAyah(item) {
   const card = document.createElement("article");
 
   card.className = "ayah-card";
+
+  card.dataset.surah = String(item.surah.number);
+  card.dataset.ayah = String(ayah.ayah_number);
 
   const isSurahStart = Number(ayah.ayah_number) === 1;
 
