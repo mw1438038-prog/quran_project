@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,12 +7,13 @@
 
     <title>Quran Reading</title>
 
-    <!-- Noto Kufi Arabic -->
+    <!-- Arabic Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
+    <!-- Quran CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/quran.css') }}"
@@ -27,6 +27,7 @@
       ====================================================== -->
 
       <section class="page-control">
+        <!-- Surah -->
         <div class="surah-selector">
           <label for="surahSelect">Surah</label>
 
@@ -35,6 +36,7 @@
           </select>
         </div>
 
+        <!-- Juz -->
         <div class="surah-selector">
           <label for="juzSelect">Para / Juz</label>
 
@@ -43,8 +45,9 @@
           </select>
         </div>
 
+        <!-- Page -->
         <div class="page-info">
-          <span class="page-label">Quran Page</span>
+          <span class="page-label"> Quran Page </span>
 
           <div class="page-number-box">
             <input type="number" id="pageInput" min="1" max="604" value="1" />
@@ -53,8 +56,9 @@
           </div>
         </div>
 
+        <!-- Reading Mode -->
         <div class="surah-selector">
-          <label for="readingMode">Reading Mode</label>
+          <label for="readingMode"> Reading Mode </label>
 
           <select id="readingMode">
             <option value="arabic">Arabic Only</option>
@@ -64,6 +68,26 @@
             <option value="tafsir">Arabic + Translation + Tafseer</option>
           </select>
         </div>
+
+        <!-- =================================================
+             QARI SELECTION
+        ================================================== -->
+
+        <div class="surah-selector">
+          <label for="qariSelect"> Qari </label>
+
+          <select id="qariSelect">
+            <option value="1">Abdul Basit — Mujawwad</option>
+
+            <option value="2">Abdul Basit — Murattal</option>
+
+            <option value="3">Mishary Rashid Alafasy</option>
+
+            <option value="4">Mahmoud Khalil Al-Husary</option>
+
+            <option value="5">Saad Al-Ghamdi</option>
+          </select>
+        </div>
       </section>
 
       <!-- =====================================================
@@ -71,8 +95,12 @@
       ====================================================== -->
 
       <section class="quran-page">
+        <!-- =================================================
+             QURAN HEADER
+        ================================================== -->
+
         <div class="quran-page-header">
-          <!-- Quran Title + Icon -->
+          <!-- Quran Title -->
 
           <div class="quran-heading">
             <div class="quran-icon" aria-label="Quran">📖</div>
@@ -95,15 +123,15 @@
           </div>
         </div>
 
-        <!-- =====================================================
+        <!-- =================================================
              BISMILLAH
-        ====================================================== -->
+        ================================================== -->
 
         <div class="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
 
-        <!-- =====================================================
+        <!-- =================================================
              LOADING
-        ====================================================== -->
+        ================================================== -->
 
         <div class="loading" id="loading">
           <div class="loader"></div>
@@ -111,15 +139,15 @@
           <p>Loading Quran...</p>
         </div>
 
-        <!-- =====================================================
+        <!-- =================================================
              ERROR
-        ====================================================== -->
+        ================================================== -->
 
         <div class="error-message" id="errorMessage"></div>
 
-        <!-- =====================================================
+        <!-- =================================================
              AYAH LIST
-        ====================================================== -->
+        ================================================== -->
 
         <div class="ayah-list" id="ayahList"></div>
       </section>
@@ -147,7 +175,9 @@
       </section>
     </main>
 
-    <!-- Quran JavaScript -->
+    <!-- =====================================================
+         QURAN JAVASCRIPT
+    ====================================================== -->
 
     <script src="{{ url_for('static', filename='js/quran.js') }}"></script>
   </body>

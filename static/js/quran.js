@@ -3,6 +3,31 @@ let readingMode = "arabic";
 let currentQuranData = null;
 
 /* =========================================================
+   AUDIO
+========================================================= */
+
+let currentAudio = null;
+let currentAudioButton = null;
+
+/* =========================================================
+   QARI
+========================================================= */
+
+const qariSelect = document.getElementById("qariSelect");
+
+let selectedRecitationId = "1";
+
+/*
+ * Current Quran Foundation ayah-by-ayah recitations.
+ *
+ * ID 1 = AbdulBaset AbdulSamad — Mujawwad
+ * ID 7 = Mishari Rashid al-Afasy — Murattal
+ *
+ * More reciters can be added after getting their exact
+ * ayah-by-ayah recitation IDs from Quran Foundation.
+ */
+
+/* =========================================================
    ELEMENTS
 ========================================================= */
 
@@ -24,6 +49,7 @@ const loading = document.getElementById("loading");
 const errorMessage = document.getElementById("errorMessage");
 
 const previousPageBottom = document.getElementById("previousPageBottom");
+
 const nextPageBottom = document.getElementById("nextPageBottom");
 
 const quranPage = document.querySelector(".quran-page");
@@ -33,6 +59,12 @@ const quranPage = document.querySelector(".quran-page");
 ========================================================= */
 
 const pageCache = new Map();
+
+/* =========================================================
+   AUDIO CACHE
+========================================================= */
+
+const audioCache = new Map();
 
 /* =========================================================
    PARA NAMES
@@ -107,6 +139,267 @@ function hideLoading() {
 hideLoading();
 
 /* =========================================================
+   QARI SELECTION
+========================================================= */
+
+if (qariSelect) {
+  selectedRecitationId = qariSelect.value || "1";
+
+  qariSelect.addEventListener("change", function () {
+    selectedRecitationId = qariSelect.value || "1";
+
+    /*
+     * Stop currently playing audio.
+     */
+    stopCurrentAudio();
+
+    /*
+     * Audio cache ko clear karna zaroori nahi.
+     * Cache key mein recitation ID already included hai.
+     */
+  });
+}
+
+/* =========================================================
+   STOP CURRENT AUDIO
+========================================================= */
+
+function stopCurrentAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+
+    currentAudio.currentTime = 0;
+
+    currentAudio = null;
+  }
+
+  if (currentAudioButton) {
+    currentAudioButton.textContent = "▶ Play";
+
+    currentAudioButton.classList.remove("playing");
+
+    currentAudioButton.disabled = false;
+
+    currentAudioButton = null;
+  }
+}
+
+/* =========================================================
+   AUDIO URL
+========================================================= */
+
+function buildAudioUrl(audioPath) {
+  if (!audioPath) {
+    return null;
+  }
+
+  /*
+   * Agar API already complete URL de.
+   */
+
+  if (audioPath.startsWith("http://") || audioPath.startsWith("https://")) {
+    return audioPath;
+  }
+
+  /*
+   * Quran Foundation audio path.
+   */
+
+  return "https://verses.quran.foundation/" + audioPath.replace(/^\/+/, "");
+}
+
+/* =========================================================
+   GET AYAH AUDIO
+========================================================= */
+
+async function getAyahAudio(surahNumber, ayahNumber) {
+  /*
+   * Qari ID ko cache key mein include karna zaroori hai.
+   *
+   * Example:
+   *
+   * 1:1:1
+   * 7:1:1
+   *
+   * Dono alag audio hongi.
+   */
+
+  const cacheKey =
+    `${selectedRecitationId}:` + `${surahNumber}:` + `${ayahNumber}`;
+
+  if (audioCache.has(cacheKey)) {
+    return audioCache.get(cacheKey);
+  }
+
+  const response = await fetch(
+    `/api/quran/audio/` +
+      `${surahNumber}/` +
+      `${ayahNumber}` +
+      `?recitation_id=${encodeURIComponent(selectedRecitationId)}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+
+  const responseText = await response.text();
+
+  let data;
+
+  try {
+    data = JSON.parse(responseText);
+  } catch (error) {
+    console.error(
+      "Audio API returned non-JSON:",
+      response.status,
+      responseText,
+    );
+
+    throw new Error("Audio API ne JSON ke bajaye HTML/error response diya.");
+  }
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || "Audio load nahi ho saka.");
+  }
+
+  const audioUrl = buildAudioUrl(data.audio_url);
+
+  if (!audioUrl) {
+    throw new Error("Audio URL available nahi hai.");
+  }
+
+  audioCache.set(cacheKey, audioUrl);
+
+  return audioUrl;
+}
+
+/* =========================================================
+   PLAY AYAH AUDIO
+========================================================= */
+
+async function playAyahAudio(surahNumber, ayahNumber, button) {
+  /*
+   * Agar isi button ka audio chal raha hai
+   */
+
+  if (currentAudio && currentAudioButton === button) {
+    if (!currentAudio.paused) {
+      currentAudio.pause();
+
+      button.textContent = "▶ Play";
+
+      button.classList.remove("playing");
+
+      return;
+    }
+
+    try {
+      await currentAudio.play();
+
+      button.textContent = "⏸ Pause";
+
+      button.classList.add("playing");
+
+      return;
+    } catch (error) {
+      console.error("Audio resume error:", error);
+    }
+  }
+
+  /*
+   * Pehle doosra audio stop.
+   */
+
+  stopCurrentAudio();
+
+  button.disabled = true;
+
+  button.textContent = "⏳ Loading...";
+
+  try {
+    const audioUrl = await getAyahAudio(surahNumber, ayahNumber);
+
+    const audio = new Audio(audioUrl);
+
+    audio.preload = "auto";
+
+    currentAudio = audio;
+
+    currentAudioButton = button;
+
+    audio.addEventListener("ended", function () {
+      button.textContent = "▶ Play";
+
+      button.classList.remove("playing");
+
+      button.disabled = false;
+
+      currentAudio = null;
+
+      currentAudioButton = null;
+    });
+
+    audio.addEventListener("error", function () {
+      console.error("Browser audio error:", audio.error);
+
+      button.textContent = "▶ Play";
+
+      button.classList.remove("playing");
+
+      button.disabled = false;
+
+      currentAudio = null;
+
+      currentAudioButton = null;
+    });
+
+    await audio.play();
+
+    button.disabled = false;
+
+    button.textContent = "⏸ Pause";
+
+    button.classList.add("playing");
+  } catch (error) {
+    console.error("Ayah audio error:", error);
+
+    button.disabled = false;
+
+    button.textContent = "▶ Play";
+
+    button.classList.remove("playing");
+
+    currentAudio = null;
+
+    currentAudioButton = null;
+
+    alert("Quran audio load nahi ho saki.\n\n" + error.message);
+  }
+}
+
+/* =========================================================
+   CREATE AUDIO BUTTON
+========================================================= */
+
+function createAudioButton(ayah) {
+  const button = document.createElement("button");
+
+  button.type = "button";
+
+  button.className = "ayah-audio-button";
+
+  button.textContent = "▶ Play";
+
+  button.setAttribute("aria-label", `Play Ayah ${ayah.ayah_number}`);
+
+  button.addEventListener("click", function () {
+    playAyahAudio(ayah.surah_number, ayah.ayah_number, button);
+  });
+
+  return button;
+}
+
+/* =========================================================
    LOAD SURAHS
 ========================================================= */
 
@@ -120,8 +413,6 @@ async function loadSurahs() {
       method: "GET",
       cache: "no-store",
     });
-
-    console.log(`surah:${response}`);
 
     const responseText = await response.text();
 
@@ -144,6 +435,7 @@ async function loadSurahs() {
     const defaultOption = document.createElement("option");
 
     defaultOption.value = "";
+
     defaultOption.textContent = "Select Surah";
 
     surahSelect.appendChild(defaultOption);
@@ -155,7 +447,10 @@ async function loadSurahs() {
 
       option.dataset.firstPage = surah.first_page || "";
 
-      option.textContent = `${surah.number}. ${surah.name_arabic} — ${surah.name_english}`;
+      option.textContent =
+        `${surah.number}. ` +
+        `${surah.name_arabic} — ` +
+        `${surah.name_english}`;
 
       surahSelect.appendChild(option);
     });
@@ -180,6 +475,7 @@ function loadJuzList() {
   const defaultOption = document.createElement("option");
 
   defaultOption.value = "";
+
   defaultOption.textContent = "Select Para";
 
   juzSelect.appendChild(defaultOption);
@@ -270,6 +566,8 @@ if (readingModeSelect) {
 
     pageCache.clear();
 
+    stopCurrentAudio();
+
     loadQuranPage(currentPage);
   });
 }
@@ -286,14 +584,13 @@ async function fetchQuranPage(pageNumber) {
   }
 
   const response = await fetch(
-    `/api/quran/pages/${pageNumber}?mode=${readingMode}`,
+    `/api/quran/pages/${pageNumber}` +
+      `?mode=${encodeURIComponent(readingMode)}`,
     {
       method: "GET",
       cache: "no-store",
     },
   );
-
-  console.log(`Fetch quran page:${response}`);
 
   const responseText = await response.text();
 
@@ -364,6 +661,8 @@ async function loadQuranPage(pageNumber) {
   if (pageNumber > 604) {
     pageNumber = 604;
   }
+
+  stopCurrentAudio();
 
   hideLoading();
 
@@ -438,13 +737,15 @@ function updateHeader(data) {
   const surah = firstItem.surah;
 
   if (surahTitle) {
-    surahTitle.textContent = `${surah.name_english} — ${surah.name_arabic}`;
+    surahTitle.textContent =
+      `${surah.name_english} — ` + `${surah.name_arabic}`;
   }
 
   const juzNumber = firstItem.ayah.juz_number;
 
   if (juzTitle && juzNumber && juzNumber >= 1 && juzNumber <= 30) {
-    juzTitle.textContent = `Para ${juzNumber} — ${juzNames[juzNumber - 1]}`;
+    juzTitle.textContent =
+      `Para ${juzNumber} — ` + `${juzNames[juzNumber - 1]}`;
   }
 }
 
@@ -521,7 +822,8 @@ function createSurahHeader(surah) {
 
   surahHeader.className = "ayah-surah-name";
 
-  surahHeader.textContent = `${surah.number}. ${surah.name_english} — ${surah.name_arabic}`;
+  surahHeader.textContent =
+    `${surah.number}. ` + `${surah.name_english} — ` + `${surah.name_arabic}`;
 
   return surahHeader;
 }
@@ -531,20 +833,10 @@ function createSurahHeader(surah) {
 ========================================================= */
 
 const TAJWEED = {
-  /*
-   * Qalqalah
-   */
   qalqalah: new Set(["ق", "ط", "ب", "ج", "د"]),
 
-  /*
-   * Idgham
-   * يرملون
-   */
   idgham: new Set(["ي", "ر", "م", "ل", "و", "ن"]),
 
-  /*
-   * Ikhfa
-   */
   ikhfa: new Set([
     "ت",
     "ث",
@@ -563,9 +855,6 @@ const TAJWEED = {
     "ك",
   ]),
 
-  /*
-   * Iqlab
-   */
   iqlab: new Set(["ب"]),
 };
 
@@ -604,7 +893,7 @@ function isArabicLetter(char) {
 }
 
 /* =========================================================
-   GET MARKS AFTER LETTER
+   GET MARKS
 ========================================================= */
 
 function getMarksAfter(chars, letterIndex) {
@@ -622,7 +911,7 @@ function getMarksAfter(chars, letterIndex) {
 }
 
 /* =========================================================
-   GET PREVIOUS LETTER
+   PREVIOUS LETTER
 ========================================================= */
 
 function getPreviousLetter(chars, startIndex) {
@@ -639,7 +928,7 @@ function getPreviousLetter(chars, startIndex) {
 }
 
 /* =========================================================
-   GET NEXT LETTER
+   NEXT LETTER
 ========================================================= */
 
 function getNextLetter(chars, startIndex) {
@@ -680,30 +969,13 @@ function isMaddLetter(chars, index) {
 
   const marks = getMarksAfter(chars, index);
 
-  /*
-   * Explicit small alif:
-   * ٰ
-   */
-
   if (char === "ٰ") {
     return true;
   }
 
-  /*
-   * Maddah:
-   * آ
-   */
-
   if (char === "آ") {
     return true;
   }
-
-  /*
-   * Normal Alif:
-   *
-   * Sirf tab Madd jab previous
-   * letter par Fathah ho.
-   */
 
   if (char === "ا") {
     const previous = getPreviousLetter(chars, index);
@@ -717,10 +989,6 @@ function isMaddLetter(chars, index) {
     }
   }
 
-  /*
-   * Waw + Sukoon after Dammah
-   */
-
   if (char === "و" && hasSukoon(marks)) {
     const previous = getPreviousLetter(chars, index);
 
@@ -733,10 +1001,6 @@ function isMaddLetter(chars, index) {
     }
   }
 
-  /*
-   * Ya + Sukoon after Kasrah
-   */
-
   if (char === "ي" && hasSukoon(marks)) {
     const previous = getPreviousLetter(chars, index);
 
@@ -748,10 +1012,6 @@ function isMaddLetter(chars, index) {
       }
     }
   }
-
-  /*
-   * Alif Maqsurah
-   */
 
   if (char === "ى") {
     return true;
@@ -775,87 +1035,41 @@ function detectTajweedRule(chars, index) {
 
   const next = getNextLetter(chars, index + 1);
 
-  /* =====================================================
-     GHUNNAH
-     نّ / مّ
-  ===================================================== */
-
   if ((char === "ن" || char === "م") && hasShadda(marks)) {
     return "ghunnah";
   }
 
-  /* =====================================================
-     NOON SAKINAH
-  ===================================================== */
-
   if (char === "ن" && hasSukoon(marks) && next) {
-    /*
-     * IQLAB
-     */
-
     if (TAJWEED.iqlab.has(next.char)) {
       return "iqlab";
     }
-
-    /*
-     * IDGHAM
-     */
 
     if (TAJWEED.idgham.has(next.char)) {
       return "idgham";
     }
 
-    /*
-     * IKHFA
-     */
-
     if (TAJWEED.ikhfa.has(next.char)) {
       return "ikhfa";
     }
   }
-
-  /* =====================================================
-     TANWEEN
-  ===================================================== */
 
   if (hasTanween(marks) && next) {
-    /*
-     * IQLAB
-     */
-
     if (TAJWEED.iqlab.has(next.char)) {
       return "iqlab";
     }
-
-    /*
-     * IDGHAM
-     */
 
     if (TAJWEED.idgham.has(next.char)) {
       return "idgham";
     }
 
-    /*
-     * IKHFA
-     */
-
     if (TAJWEED.ikhfa.has(next.char)) {
       return "ikhfa";
     }
   }
-
-  /* =====================================================
-     QALQALAH
-     ق ط ب ج د + SUKOON
-  ===================================================== */
 
   if (TAJWEED.qalqalah.has(char) && hasSukoon(marks)) {
     return "qalqalah";
   }
-
-  /* =====================================================
-     MADD
-  ===================================================== */
 
   if (isMaddLetter(chars, index)) {
     return "madd";
@@ -884,10 +1098,6 @@ function createPlainTajweedArabic(arabicText) {
   while (index < chars.length) {
     const char = chars[index];
 
-    /*
-     * Space
-     */
-
     if (char.trim() === "") {
       wrapper.appendChild(document.createTextNode(char));
 
@@ -895,10 +1105,6 @@ function createPlainTajweedArabic(arabicText) {
 
       continue;
     }
-
-    /*
-     * Standalone Arabic mark
-     */
 
     if (isArabicMark(char)) {
       wrapper.appendChild(document.createTextNode(char));
@@ -908,10 +1114,6 @@ function createPlainTajweedArabic(arabicText) {
       continue;
     }
 
-    /*
-     * Non Arabic character
-     */
-
     if (!isArabicLetter(char)) {
       wrapper.appendChild(document.createTextNode(char));
 
@@ -920,23 +1122,11 @@ function createPlainTajweedArabic(arabicText) {
       continue;
     }
 
-    /*
-     * Detect rule
-     */
-
     const rule = detectTajweedRule(chars, index);
-
-    /*
-     * Get harakat
-     */
 
     const marks = getMarksAfter(chars, index);
 
     const fullText = char + marks.join("");
-
-    /*
-     * Apply color
-     */
 
     if (rule) {
       const span = document.createElement("span");
@@ -949,10 +1139,6 @@ function createPlainTajweedArabic(arabicText) {
     } else {
       wrapper.appendChild(document.createTextNode(fullText));
     }
-
-    /*
-     * Skip marks
-     */
 
     index += 1 + marks.length;
   }
@@ -971,21 +1157,11 @@ function createTajweedArabic(tajweedText, fallbackText) {
 
   const text = tajweedText || fallbackText || "";
 
-  /*
-   * Database mein agar
-   * HTML Tajweed markup hai
-   */
-
   if (typeof text === "string" && /<[^>]+>/.test(text)) {
     wrapper.innerHTML = text;
 
     return wrapper;
   }
-
-  /*
-   * Plain Arabic:
-   * local parser
-   */
 
   return createPlainTajweedArabic(text);
 }
@@ -1108,7 +1284,7 @@ function createAyah(item) {
 
       left.appendChild(tafsirTitle);
 
-      const tafsirs = ayah.tafsirs || [];
+      const tafsirs = Array.isArray(ayah.tafsirs) ? ayah.tafsirs : [];
 
       if (tafsirs.length > 0) {
         tafsirs.forEach(function (tafsir) {
@@ -1141,6 +1317,22 @@ function createAyah(item) {
   const right = document.createElement("div");
 
   right.className = "arabic-side";
+
+  /* =====================================================
+     AUDIO BUTTON
+  ===================================================== */
+
+  const audioButton = createAudioButton({
+    surah_number: item.surah.number,
+
+    ayah_number: ayah.ayah_number,
+  });
+
+  right.appendChild(audioButton);
+
+  /* =====================================================
+     ARABIC ONLY
+  ===================================================== */
 
   if (readingMode === "arabic") {
     const arabic = document.createElement("div");

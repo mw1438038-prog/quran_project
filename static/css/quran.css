@@ -1778,3 +1778,36 @@ footer {
     z-index: 10000 !important;
   }
 }
+/* =========================================================
+   QARI SELECTOR
+========================================================= */
+
+.page-control .surah-selector select#qariSelect {
+  min-width: 240px;
+  width: 240px;
+  min-height: 42px;
+  padding: 8px 12px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.page-control .surah-selector label[for="qariSelect"] {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MOBILE QARI SELECTOR
+========================================================= */
+
+@media (max-width: 600px) {
+  .page-control .surah-selector select#qariSelect {
+    width: 100%;
+    min-width: 0;
+    font-size: 14px;
+    min-height: 42px;
+  }
+}

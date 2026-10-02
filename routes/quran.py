@@ -1,6 +1,10 @@
 
 from flask import Blueprint, jsonify, request
 
+import os
+import requests
+from requests.auth import HTTPBasicAuth
+
 from models import Surah, Ayah, Tafsir
 
 
@@ -556,4 +560,199 @@ def get_quran_page(page_number):
 
         "ayahs": page_data
     })
+    
+    # =========================================================
+# GET AYAH AUDIO
+# =========================================================
+
+@quran_bp.route(
+    "/audio/<int:surah_number>/<int:ayah_number>",
+    methods=["GET"]
+)
+def get_ayah_audio(surah_number, ayah_number):
+
+    # -----------------------------------------
+    # Quran Foundation credentials
+    # -----------------------------------------
+
+    client_id = os.getenv("QF_CLIENT_ID")
+    client_secret = os.getenv("QF_CLIENT_SECRET")
+
+    if not client_id or not client_secret:
+        return jsonify({
+            "success": False,
+            "message": "Quran Foundation API credentials are not configured"
+        }), 500
+
+    # -----------------------------------------
+    # Get recitation ID
+    # Default: AbdulBaset AbdulSamad
+    # -----------------------------------------
+
+    recitation_id = request.args.get(
+        "recitation_id",
+        "1"
+    )
+
+    # -----------------------------------------
+    # Get access token
+    # -----------------------------------------
+
+    try:
+
+        token_response = requests.post(
+            "https://oauth2.quran.foundation/oauth2/token",
+
+            auth=HTTPBasicAuth(
+                client_id,
+                client_secret
+            ),
+
+            headers={
+                "Content-Type":
+                    "application/x-www-form-urlencoded"
+            },
+
+            data={
+                "grant_type":
+                    "client_credentials",
+
+                "scope":
+                    "content"
+            },
+
+            timeout=30
+        )
+
+        if not token_response.ok:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to authenticate with Quran Foundation"
+            }), 502
+
+        token_data = token_response.json()
+
+        access_token = token_data.get(
+            "access_token"
+        )
+
+        if not access_token:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Access token was not returned"
+            }), 502
+
+    except requests.RequestException as error:
+
+        print(
+            "Quran Foundation token error:",
+            error
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Quran Foundation authentication failed"
+        }), 502
+
+    # -----------------------------------------
+    # Get Ayah audio
+    # -----------------------------------------
+
+    ayah_key = (
+        f"{surah_number}:{ayah_number}"
+    )
+
+    
+    audio_url = (
+            "https://apis.quran.foundation"
+            "/content/api/v4"
+            f"/quran/recitations/{recitation_id}"
+        )
+    try:
+
+        response = requests.get(
+
+            audio_url,
+
+            headers={
+                "x-auth-token":
+                    access_token,
+
+                "x-client-id":
+                    client_id
+            },
+
+            params={
+                "verse_key":
+                    ayah_key
+            },
+
+            timeout=30
+        )
+
+        if not response.ok:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Unable to fetch Quran audio",
+                "status":
+                    response.status_code
+            }), 502
+
+        data = response.json()
+
+        audio_files = data.get(
+            "audio_files",
+            []
+        )
+
+        if not audio_files:
+
+            return jsonify({
+                "success": False,
+                "message":
+                    "Audio not found for this Ayah"
+            }), 404
+
+        audio = audio_files[0]
+
+        return jsonify({
+
+            "success": True,
+
+            "surah_number":
+                surah_number,
+
+            "ayah_number":
+                ayah_number,
+
+            "verse_key":
+                ayah_key,
+
+            "recitation_id":
+                recitation_id,
+
+            "audio_url":
+                audio.get("url")
+
+        })
+
+    except requests.RequestException as error:
+
+        print(
+            "Quran audio error:",
+            error
+        )
+
+        return jsonify({
+            "success": False,
+            "message":
+                "Quran audio request failed"
+        }), 502
 
