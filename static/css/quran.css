@@ -35,24 +35,38 @@ body {
 
   padding: 6px 0;
 }
+
 /* =====================================================
    PREMIUM CONTROL HEADER
+   QARI + SURAH + PARA + READING MODE + PAGE
+   ALL IN ONE LINE
 ===================================================== */
 
 .page-control {
   position: relative;
 
   width: calc(100% - 30px);
-  max-width: 1200px;
+  max-width: 1400px;
 
   margin: 0 auto 8px;
 
   flex-shrink: 0;
 
   display: grid;
-  grid-template-columns: 1.25fr 1fr 0.8fr 1.25fr;
+
+  /*
+    Qari | Surah | Para | Reading Mode | Page
+  */
+
+  grid-template-columns:
+    1.55fr
+    1.35fr
+    1.05fr
+    1.15fr
+    0.85fr;
 
   gap: 10px;
+
   align-items: end;
 
   padding: 12px 16px;
@@ -66,6 +80,7 @@ body {
     linear-gradient(135deg, #064e3b 0%, #047857 52%, #065f46 100%);
 
   border: 1px solid rgba(167, 243, 208, 0.22);
+
   border-radius: 15px;
 
   box-shadow:
@@ -84,6 +99,7 @@ body {
   top: -32px;
 
   font-family: serif;
+
   font-size: 95px;
 
   color: rgba(255, 255, 255, 0.04);
@@ -103,9 +119,12 @@ body {
   z-index: 2;
 
   display: flex;
+
   flex-direction: column;
 
   gap: 4px;
+
+  min-width: 0;
 }
 
 /* =====================================================
@@ -118,9 +137,11 @@ body {
   color: #d1fae5;
 
   font-size: 10px;
+
   font-weight: 700;
 
   letter-spacing: 0.6px;
+
   text-transform: uppercase;
 }
 
@@ -130,18 +151,24 @@ body {
 
 #surahSelect,
 #juzSelect,
-#readingMode {
+#readingMode,
+#qariSelect {
   width: 100%;
+
   height: 38px;
+
+  min-width: 0;
 
   padding: 0 12px;
 
   border-radius: 9px;
 
   outline: none;
+
   cursor: pointer;
 
   font-size: 13px;
+
   font-weight: 600;
 
   transition:
@@ -151,7 +178,8 @@ body {
 }
 
 #surahSelect,
-#juzSelect {
+#juzSelect,
+#qariSelect {
   background: rgba(255, 255, 255, 0.98);
 
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -175,18 +203,48 @@ body {
 
 #surahSelect:hover,
 #juzSelect:hover,
-#readingMode:hover {
+#readingMode:hover,
+#qariSelect:hover {
   transform: translateY(-1px);
 }
 
 #surahSelect:focus,
 #juzSelect:focus,
-#readingMode:focus {
+#readingMode:focus,
+#qariSelect:focus {
   border-color: #86efac;
 
   box-shadow:
     0 0 0 3px rgba(134, 239, 172, 0.18),
     0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================================================
+   QARI SELECTOR
+===================================================== */
+
+.page-control .surah-selector select#qariSelect {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 38px;
+
+  height: 38px;
+
+  padding: 0 12px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.page-control .surah-selector label[for="qariSelect"] {
+  font-size: 10px;
+
+  font-weight: 700;
 }
 
 /* =====================================================
@@ -197,7 +255,9 @@ body {
   height: 38px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 3px;
@@ -223,11 +283,13 @@ body {
 
 .page-number-box input {
   width: 45px;
+
   height: 28px;
 
   text-align: center;
 
   border: none;
+
   outline: none;
 
   background: transparent;
@@ -235,12 +297,14 @@ body {
   color: #064e3b;
 
   font-size: 15px;
+
   font-weight: 800;
 }
 
 .page-number-box input::-webkit-outer-spin-button,
 .page-number-box input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+
   margin: 0;
 }
 
@@ -252,6 +316,7 @@ body {
   color: #166534;
 
   font-size: 12px;
+
   font-weight: 700;
 }
 
@@ -261,6 +326,7 @@ body {
 
 .nav-button {
   min-width: 120px;
+
   height: 38px;
 
   padding: 0 16px;
@@ -274,6 +340,7 @@ body {
   color: #244735;
 
   font-size: 14px;
+
   font-weight: 600;
 
   cursor: pointer;
@@ -303,6 +370,7 @@ body {
 
 .nav-button:disabled {
   opacity: 0.4;
+
   cursor: not-allowed;
 }
 
@@ -314,6 +382,7 @@ body {
   width: 100%;
 
   flex: 1;
+
   min-height: 0;
 
   background: transparent;
@@ -323,6 +392,7 @@ body {
   overflow: hidden;
 
   display: flex;
+
   flex-direction: column;
 }
 
@@ -334,6 +404,7 @@ body {
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   margin-bottom: 8px;
@@ -351,6 +422,7 @@ body {
 
 .quran-icon {
   width: 58px;
+
   height: 58px;
 
   flex-shrink: 0;
@@ -358,6 +430,7 @@ body {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   font-size: 31px;
@@ -415,6 +488,7 @@ body {
   display: block;
 
   width: 58px;
+
   height: 2px;
 
   margin-top: 4px;
@@ -494,6 +568,7 @@ body {
   width: 100%;
 
   flex: none;
+
   min-height: 0;
 
   overflow: visible;
@@ -653,6 +728,7 @@ body {
   position: absolute;
 
   top: -12px;
+
   right: 16px;
 
   padding: 2px 10px;
@@ -724,6 +800,7 @@ body {
   position: absolute;
 
   top: -12px;
+
   right: 16px;
 
   padding: 2px 10px;
@@ -765,6 +842,7 @@ body {
 
 .ayah-number {
   width: 30px;
+
   height: 30px;
 
   min-width: 30px;
@@ -772,6 +850,7 @@ body {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   margin-top: 5px;
@@ -891,6 +970,7 @@ body {
 
 .loader {
   width: 35px;
+
   height: 35px;
 
   margin: 0 auto 12px;
@@ -998,17 +1078,17 @@ body {
    READING MODE
 ===================================================== */
 
-/* Back button is created by JavaScript */
-
 .mode-back-button {
   display: none;
 
   align-items: center;
+
   justify-content: center;
 
   align-self: flex-end;
 
   width: auto;
+
   min-width: 82px;
 
   height: 36px;
@@ -1122,18 +1202,156 @@ footer {
 }
 
 /* =====================================================
+   FULL SURAH AUDIO CONTROLS
+===================================================== */
+/* =========================================
+   SURAH AUDIO CONTROLS - GOLD THEME
+   ========================================= */
+
+.surah-audio-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 10px auto 14px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.surah-audio-button {
+  min-width: 115px;
+  height: 42px;
+  padding: 0 18px;
+
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #b8860b, #d4af37, #f1d06a);
+
+  color: #173b2f;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+
+  box-shadow:
+    0 4px 10px rgba(184, 134, 11, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+
+  transition: all 0.2s ease;
+}
+
+.surah-audio-button:hover {
+  background: linear-gradient(135deg, #d4af37, #f1d06a, #d4af37);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(184, 134, 11, 0.35),
+    0 0 0 1px rgba(212, 175, 55, 0.3);
+}
+
+.surah-audio-button:active {
+  transform: translateY(0);
+}
+
+/* PLAY */
+.surah-audio-button.play {
+  background: linear-gradient(135deg, #b8860b, #d4af37, #f1d06a);
+}
+
+/* PAUSE */
+.surah-audio-button.pause {
+  background: linear-gradient(135deg, #a87908, #d4af37, #e8c65a);
+}
+
+/* STOP */
+.surah-audio-button.stop {
+  background: linear-gradient(135deg, #9f7308, #c9a52e, #edcc63);
+}
+
+/* STATUS */
+.surah-audio-status {
+  width: 100%;
+  text-align: center;
+  margin: 2px auto 10px;
+
+  color: #b8860b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .surah-audio-controls {
+    justify-content: center;
+    gap: 7px;
+    padding: 7px 5px;
+  }
+
+  .surah-audio-button {
+    min-width: 0;
+    flex: 1;
+    max-width: 115px;
+
+    height: 40px;
+    padding: 0 8px;
+
+    font-size: 12px;
+  }
+}
+
+/* =====================================================
    TABLET
 ===================================================== */
 
 @media (max-width: 1100px) {
   .page-control {
-    grid-template-columns: 1fr 1fr;
+    /*
+      Still one line:
+      Qari | Surah | Para | Reading | Page
+    */
 
-    width: calc(100% - 24px);
+    grid-template-columns:
+      1.45fr
+      1.25fr
+      1fr
+      1.1fr
+      0.8fr;
+
+    gap: 8px;
+
+    width: calc(100% - 20px);
+
+    padding: 10px 12px;
+  }
+
+  .page-control .surah-selector select#qariSelect {
+    font-size: 12px;
+
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+
+  #surahSelect,
+  #juzSelect,
+  #readingMode {
+    font-size: 12px;
+
+    padding-left: 9px;
+    padding-right: 9px;
   }
 
   .quran-page {
     padding-left: 30px;
+
     padding-right: 30px;
   }
 }
@@ -1143,9 +1361,10 @@ footer {
 ===================================================== */
 
 @media (max-width: 900px) {
-  .container {
-    padding: 5px 0;
-  }
+  /*
+    Tablet par controls 2 rows
+    taa-ke controls squeeze na hon.
+  */
 
   .page-control {
     grid-template-columns: 1fr 1fr;
@@ -1224,6 +1443,7 @@ footer {
 
   .quran-icon {
     width: 54px;
+
     height: 54px;
 
     font-size: 29px;
@@ -1248,27 +1468,36 @@ footer {
   html,
   body {
     width: 100%;
-    height: 100%;
 
-    overflow: hidden;
+    min-height: 100%;
+
+    overflow-x: hidden;
+
+    overflow-y: auto;
   }
 
   .container {
     width: 100%;
-    height: 100vh;
 
-    min-height: 0;
+    min-height: 100vh;
+
+    height: auto;
 
     padding: 4px 0;
 
-    overflow: hidden;
+    overflow: visible;
   }
 
-  /* -------------------------------
-     CONTROL HEADER
-  ------------------------------- */
+  /* ===================================================
+     MOBILE CONTROL HEADER
+  =================================================== */
 
   .page-control {
+    /*
+      Mobile par one line nahi,
+      vertical layout readable rahega.
+    */
+
     grid-template-columns: 1fr;
 
     width: calc(100% - 14px);
@@ -1286,15 +1515,20 @@ footer {
     font-size: 70px;
 
     right: 2px;
+
     top: -15px;
   }
 
   #surahSelect,
   #juzSelect,
-  #readingMode {
+  #readingMode,
+  #qariSelect {
     width: 100%;
 
+    min-width: 0;
+
     height: 40px;
+
     min-height: 40px;
 
     font-size: 13px;
@@ -1310,9 +1544,9 @@ footer {
     font-size: 9px;
   }
 
-  /* -------------------------------
+  /* ===================================================
      QURAN PAGE
-  ------------------------------- */
+  =================================================== */
 
   .quran-page {
     width: 100%;
@@ -1321,17 +1555,18 @@ footer {
 
     padding: 7px 10px;
 
-    overflow: hidden;
+    overflow: visible;
   }
 
-  /* -------------------------------
+  /* ===================================================
      BACK BUTTON
-  ------------------------------- */
+  =================================================== */
 
   .mode-back-button {
     display: none;
 
     width: 78px !important;
+
     min-width: 78px !important;
 
     height: 40px !important;
@@ -1351,7 +1586,9 @@ footer {
 
   .container.reading-mode-active .mode-back-button {
     display: flex !important;
+
     visibility: visible !important;
+
     opacity: 1 !important;
   }
 
@@ -1359,9 +1596,9 @@ footer {
     padding: 5px 8px;
   }
 
-  /* -------------------------------
+  /* ===================================================
      QURAN HEADER
-  ------------------------------- */
+  =================================================== */
 
   .quran-page-header {
     width: 100%;
@@ -1379,6 +1616,7 @@ footer {
 
   .quran-icon {
     width: 46px;
+
     height: 46px;
 
     border-radius: 12px;
@@ -1422,9 +1660,9 @@ footer {
     flex-shrink: 0;
   }
 
-  /* -------------------------------
+  /* ===================================================
      BISMILLAH
-  ------------------------------- */
+  =================================================== */
 
   .bismillah {
     font-size: 23px;
@@ -1434,16 +1672,17 @@ footer {
     line-height: 1.8;
   }
 
-  /* -------------------------------
+  /* ===================================================
      AYAH LIST
-  ------------------------------- */
+  =================================================== */
 
   .ayah-list {
     width: 100%;
 
     min-height: 0;
 
-    overflow-y: auto;
+    overflow-y: visible;
+
     overflow-x: hidden;
 
     padding-bottom: 8px;
@@ -1457,9 +1696,9 @@ footer {
     gap: 12px;
   }
 
-  /* -------------------------------
+  /* ===================================================
      ARABIC
-  ------------------------------- */
+  =================================================== */
 
   .arabic-side {
     width: 100%;
@@ -1475,16 +1714,13 @@ footer {
 
   .ayah-number {
     width: 27px;
+
     height: 27px;
 
     min-width: 27px;
 
     font-size: 10px;
   }
-
-  /* -------------------------------
-     ARABIC ONLY
-  ------------------------------- */
 
   .ayah-content .arabic-side:only-child {
     width: 100%;
@@ -1514,9 +1750,9 @@ footer {
     font-size: 16px;
   }
 
-  /* -------------------------------
+  /* ===================================================
      TRANSLATION
-  ------------------------------- */
+  =================================================== */
 
   .translation-side {
     width: 100%;
@@ -1544,9 +1780,9 @@ footer {
     border-right-width: 3px;
   }
 
-  /* -------------------------------
+  /* ===================================================
      TAFSEER
-  ------------------------------- */
+  =================================================== */
 
   .tafsir-heading {
     margin-top: 25px;
@@ -1564,9 +1800,35 @@ footer {
     border-right-width: 3px;
   }
 
-  /* -------------------------------
+  /* ===================================================
+     FULL SURAH AUDIO
+  =================================================== */
+
+  .surah-audio-controls {
+    gap: 6px;
+
+    padding: 9px 6px;
+
+    margin-top: 8px;
+
+    margin-bottom: 12px;
+  }
+
+  .surah-audio-button {
+    min-height: 36px;
+
+    padding: 7px 11px;
+
+    font-size: 12px;
+  }
+
+  .surah-audio-status {
+    font-size: 11px;
+  }
+
+  /* ===================================================
      BOTTOM NAVIGATION
-  ------------------------------- */
+  =================================================== */
 
   .bottom-navigation {
     position: relative !important;
@@ -1577,7 +1839,7 @@ footer {
 
     max-width: none !important;
 
-    margin: 5px 0 0 !important;
+    margin: 5px 0 10px !important;
 
     padding: 4px 7px 6px !important;
 
@@ -1636,9 +1898,9 @@ footer {
     display: none !important;
   }
 
-  /* -------------------------------
+  /* ===================================================
      READING MODE MOBILE
-  ------------------------------- */
+  =================================================== */
 
   .container.reading-mode-active .bottom-navigation {
     display: flex !important;
@@ -1668,11 +1930,13 @@ footer {
 @media (max-width: 380px) {
   .quran-page {
     padding-left: 7px;
+
     padding-right: 7px;
   }
 
   .mode-back-button {
     width: 72px !important;
+
     min-width: 72px !important;
 
     height: 38px !important;
@@ -1682,6 +1946,7 @@ footer {
 
   .bottom-navigation {
     padding-left: 4px !important;
+
     padding-right: 4px !important;
 
     gap: 5px !important;
@@ -1723,91 +1988,84 @@ footer {
     line-height: 2.1;
   }
 }
+
 /* =====================================================
-   MOBILE - FIX PREVIOUS / NEXT VISIBILITY
+   MOBILE - PREVIOUS / NEXT VISIBILITY
 ===================================================== */
 
 @media (max-width: 600px) {
   html,
   body {
     width: 100%;
+
     min-height: 100%;
+
     overflow-x: hidden;
+
     overflow-y: auto;
   }
 
   .container {
     width: 100%;
+
     min-height: 100vh;
+
     height: auto;
+
     overflow: visible;
   }
 
   .quran-page {
     width: 100%;
+
     height: auto;
+
     min-height: 0;
+
     overflow: visible;
   }
 
   .ayah-list {
     width: 100%;
+
     height: auto;
+
     min-height: 0;
+
     overflow: visible;
   }
 
   .bottom-navigation {
     position: relative !important;
+
     display: flex !important;
+
     width: 100% !important;
+
     height: auto !important;
+
     min-height: 50px;
+
     margin-top: 10px !important;
+
     margin-bottom: 10px !important;
+
     z-index: 9999 !important;
+
     visibility: visible !important;
+
     opacity: 1 !important;
   }
 
   .bottom-navigation .nav-button {
     display: flex !important;
+
     visibility: visible !important;
+
     opacity: 1 !important;
+
     position: relative !important;
+
     z-index: 10000 !important;
-  }
-}
-/* =========================================================
-   QARI SELECTOR
-========================================================= */
-
-.page-control .surah-selector select#qariSelect {
-  min-width: 240px;
-  width: 240px;
-  min-height: 42px;
-  padding: 8px 12px;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  white-space: nowrap;
-}
-
-.page-control .surah-selector label[for="qariSelect"] {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* =========================================================
-   MOBILE QARI SELECTOR
-========================================================= */
-
-@media (max-width: 600px) {
-  .page-control .surah-selector select#qariSelect {
-    width: 100%;
-    min-width: 0;
-    font-size: 14px;
-    min-height: 42px;
   }
 }
