@@ -7,13 +7,34 @@
 
     <title>Quran Reading</title>
 
-    <!-- Arabic Font -->
+    <!-- =====================================================
+         PWA
+    ====================================================== -->
+
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='manifest.json') }}"
+    />
+
+    <meta name="theme-color" content="#0b3d2e" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- =====================================================
+         ARABIC FONT
+    ====================================================== -->
+
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Quran CSS -->
+    <!-- =====================================================
+         QURAN CSS
+    ====================================================== -->
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/quran.css') }}"
@@ -28,6 +49,7 @@
 
       <section class="page-control">
         <!-- Surah -->
+
         <div class="surah-selector">
           <label for="surahSelect">Surah</label>
 
@@ -37,6 +59,7 @@
         </div>
 
         <!-- Juz -->
+
         <div class="surah-selector">
           <label for="juzSelect">Para / Juz</label>
 
@@ -46,6 +69,7 @@
         </div>
 
         <!-- Page -->
+
         <div class="page-info">
           <span class="page-label"> Quran Page </span>
 
@@ -57,6 +81,7 @@
         </div>
 
         <!-- Reading Mode -->
+
         <div class="surah-selector">
           <label for="readingMode"> Reading Mode </label>
 
@@ -180,5 +205,27 @@
     ====================================================== -->
 
     <script src="{{ url_for('static', filename='js/quran.js') }}"></script>
+
+    <!-- =====================================================
+         PWA SERVICE WORKER
+    ====================================================== -->
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("{{ url_for('static', filename='sw.js') }}")
+            .then(function (registration) {
+              console.log(
+                "Quran PWA Service Worker registered:",
+                registration.scope,
+              );
+            })
+            .catch(function (error) {
+              console.error("Quran PWA Service Worker error:", error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
