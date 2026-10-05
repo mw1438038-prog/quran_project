@@ -1,15 +1,19 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
     <title>Quran — The Holy Quran</title>
 
     <!-- =====================================================
-         PWA
-    ====================================================== -->
+     PWA / ANDROID
+====================================================== -->
 
     <link
       rel="manifest"
@@ -20,11 +24,27 @@
 
     <meta name="mobile-web-app-capable" content="yes" />
 
+    <!-- =====================================================
+     PWA / iPHONE & iOS
+====================================================== -->
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <meta name="apple-mobile-web-app-title" content="Quran" />
+
+    <link
+      rel="apple-touch-icon"
+      href="{{ url_for('static', filename='icons/icon-192.png') }}"
+    />
+
     <!-- =====================================================
-         FONTS
-    ====================================================== -->
+     FONTS
+====================================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
 
@@ -36,8 +56,8 @@
     />
 
     <!-- =====================================================
-         HOME CSS
-    ====================================================== -->
+     HOME CSS
+====================================================== -->
 
     <link
       rel="stylesheet"
@@ -49,22 +69,21 @@
     <div class="pattern"></div>
 
     <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+     NAVBAR
+====================================================== -->
 
     <header class="navbar">
       <div class="logo">
-        <span class="logo-symbol"> ☪ </span>
-
-        <span> Al-Quran </span>
+        <span class="logo-symbol">☪</span>
+        <span>Al-Quran</span>
       </div>
 
       <a href="/quran" class="nav-button"> Open Quran </a>
     </header>
 
     <!-- =====================================================
-         HERO
-    ====================================================== -->
+     HERO
+====================================================== -->
 
     <main class="hero">
       <div class="ornament">۞</div>
@@ -78,8 +97,8 @@
       <p class="arabic-main">الْقُرْآنُ الْكَرِيمُ</p>
 
       <!-- =================================================
-           BUTTONS
-      ================================================== -->
+       BUTTONS
+  ================================================== -->
 
       <div class="buttons">
         <a href="/quran" class="primary-btn"> 📖 Start Reading </a>
@@ -92,76 +111,70 @@
       </div>
 
       <!-- =================================================
-           FEATURES
-      ================================================== -->
+       FEATURES
+  ================================================== -->
 
       <div class="features">
         <div class="feature">
-          <span> 📖 </span>
+          <span>📖</span>
 
           <div>
-            <strong> Quran Reading </strong>
-
-            <small> Read the Holy Quran </small>
+            <strong>Quran Reading</strong>
+            <small>Read the Holy Quran</small>
           </div>
         </div>
 
         <div class="feature">
-          <span> 🌙 </span>
+          <span>🌙</span>
 
           <div>
-            <strong> Peace & Reflection </strong>
-
-            <small> Take a moment to reflect </small>
+            <strong>Peace & Reflection</strong>
+            <small>Take a moment to reflect</small>
           </div>
         </div>
 
         <div class="feature">
-          <span> 🕌 </span>
+          <span>🕌</span>
 
           <div>
-            <strong> Namaz Timing </strong>
-
-            <small> Check daily prayer times </small>
+            <strong>Namaz Timing</strong>
+            <small>Check daily prayer times</small>
           </div>
         </div>
 
         <div class="feature">
-          <span> 📿 </span>
+          <span>📿</span>
 
           <div>
-            <strong> Zikr & Azkaar </strong>
-
-            <small> Daily remembrance of Allah </small>
+            <strong>Zikr & Azkaar</strong>
+            <small>Daily remembrance of Allah</small>
           </div>
         </div>
       </div>
     </main>
 
     <!-- =====================================================
-         FOOTER
-    ====================================================== -->
+     FOOTER
+====================================================== -->
 
     <footer>
       <p>May the Quran illuminate your heart and guide your path.</p>
 
-      <span> © 2026 Al-Quran </span>
+      <span>© 2026 Al-Quran</span>
     </footer>
 
     <!-- =====================================================
-         PWA SERVICE WORKER
-    ====================================================== -->
+     PWA SERVICE WORKER
+====================================================== -->
 
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
           navigator.serviceWorker
-            .register("{{ url_for('static', filename='sw.js') }}")
-
+            .register("/sw.js")
             .then(function (registration) {
               console.log("Quran PWA registered:", registration.scope);
             })
-
             .catch(function (error) {
               console.error("Quran PWA registration failed:", error);
             });

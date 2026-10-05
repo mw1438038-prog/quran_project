@@ -1,8 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 from config import Config
 from extensions import db
-
 from routes.quran import quran_bp
 
 
@@ -37,7 +36,6 @@ def create_app():
 
     @app.route("/")
     def home():
-
         return render_template("index.html")
 
     # =====================================================
@@ -46,7 +44,6 @@ def create_app():
 
     @app.route("/quran")
     def quran_page():
-
         return render_template("quran.html")
 
     # =====================================================
@@ -55,13 +52,32 @@ def create_app():
 
     @app.route("/azkaar")
     def azkaar():
-
         return render_template("azkaar.html")
-    
+
+    # =====================================================
+    # NAMAZ
+    # =====================================================
+
     @app.route("/namaz")
     def namaz():
+        return render_template("namaz.html")
 
-      return render_template("namaz.html")
+    # =====================================================
+    # PWA SERVICE WORKER
+    # =====================================================
+
+    @app.route("/sw.js")
+    def service_worker():
+
+        response = send_from_directory(
+            app.static_folder,
+            "sw.js",
+            mimetype="application/javascript"
+        )
+
+        response.headers["Service-Worker-Allowed"] = "/"
+
+        return response
 
     return app
 
@@ -78,5 +94,4 @@ app = create_app()
 # =========================================================
 
 if __name__ == "__main__":
-
     app.run(debug=True)
